@@ -1,6 +1,6 @@
 package com.lms.LearningManagementSystem.Model;
 
-public class User {
+public abstract class User {
     private Long id;
     private String name;
     private String email;
@@ -46,4 +46,22 @@ public class User {
     public void setRole(String role) {
         this.role = role;
     }
+
+    // Common methods for all users
+    public void login() {
+        System.out.println(this.name + " logged in.");
+    }
+
+    public void viewProfile() {
+        System.out.println("Viewing profile of: " + this.name);
+    }
+
+    public void updateProfile(String newName, String newEmail) {
+        this.name = newName;
+        this.email = newEmail;
+        System.out.println("Profile updated: " + this.name);
+    }
+
+    // Abstract methods to enforce implementation in subclasses
+    public abstract void specificFunctionality();
 }
