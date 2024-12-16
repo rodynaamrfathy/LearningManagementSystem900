@@ -1,7 +1,7 @@
 package com.lms.LearningManagementSystem.Controller;
 
 import com.lms.LearningManagementSystem.Model.User;
-import com.lms.LearningManagementSystem.Service.UserServices;
+import com.lms.LearningManagementSystem.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +12,7 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private UserServices userService; // Use the interface instead of the implementation
+    private UserService userService; // Use the interface instead of the implementation
 
     @PostMapping("/create")
     public User createUser(@RequestBody User user) {

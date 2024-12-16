@@ -3,7 +3,7 @@ package com.lms.LearningManagementSystem.Service;
 import com.lms.LearningManagementSystem.Model.User;
 import java.util.List;
 
-public interface UserServices {
+public interface UserService {
     List<User> getAllUsers();
     User getUserById(Long id);
     User addUser(User user);

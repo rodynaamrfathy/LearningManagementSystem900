@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Service
-public class UserServicesImpl implements UserServices {
+public class UserServiceImpl implements UserService {
 
     private final Map<Long, User> userStore = new ConcurrentHashMap<>();
     private final AtomicLong idGenerator = new AtomicLong(1); // Atomic for synchronization
