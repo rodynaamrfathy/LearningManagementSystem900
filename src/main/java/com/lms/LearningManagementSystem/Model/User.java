@@ -1,4 +1,4 @@
-package com.lms.LearningManagementSystem.Models;
+package com.lms.LearningManagementSystem.Model;
 
 public class User {
     private Long id;

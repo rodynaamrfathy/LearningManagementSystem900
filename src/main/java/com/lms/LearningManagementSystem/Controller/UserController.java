@@ -1,7 +1,7 @@
-package com.lms.LearningManagementSystem.Controllers;
+package com.lms.LearningManagementSystem.Controller;
 
-import com.lms.LearningManagementSystem.Models.User;
-import com.lms.LearningManagementSystem.Services.UserServices;
+import com.lms.LearningManagementSystem.Model.User;
+import com.lms.LearningManagementSystem.Service.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,30 +12,30 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private UserServices userServices;
+    private UserServices userService; // Use the interface instead of the implementation
 
     @PostMapping("/create")
     public User createUser(@RequestBody User user) {
-        return userServices.addUser(user);
+        return userService.addUser(user);
     }
 
     @GetMapping
     public List<User> getAllUsers() {
-        return userServices.getAllUsers();
+        return userService.getAllUsers();
     }
 
     @GetMapping("/{id}")
     public User getUserById(@PathVariable Long id) {
-        return userServices.getUserById(id);
+        return userService.getUserById(id);
     }
 
     @PutMapping("/{id}")
     public User updateUser(@RequestBody User updateUser, @PathVariable Long id) {
-        return userServices.updateUser(updateUser, id);
+        return userService.updateUser(updateUser, id);
     }
 
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Long id) {
-        userServices.deleteUser(id);
+        userService.deleteUser(id);
     }
 }
