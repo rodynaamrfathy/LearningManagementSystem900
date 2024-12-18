@@ -7,7 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
@@ -43,6 +45,23 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Long id) {
+
         userService.deleteUser(id);
     }
+
+    @GetMapping("/list")
+    public ResponseEntity<List<User>> listUsers(
+            @RequestParam(required = false) String role)
+    {
+
+        try {
+            ArrayList<User> filteredUsers = userService.listUsers(role);
+            return new ResponseEntity<>(filteredUsers, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+
 }

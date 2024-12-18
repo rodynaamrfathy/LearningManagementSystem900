@@ -24,4 +24,9 @@ public class User {
         this.email = newEmail;
         System.out.println("Profile updated: " + this.name);
     }
+
+    public boolean equals(String role, String role1) {
+        if(role.equals(role1)){return true ;}
+        return  false ;
+    }
 }

@@ -69,4 +69,22 @@ public class UserService {
     public void deleteUser(Long id) {
         userStore.remove(id);
     }
+
+    public ArrayList<User> listUsers(String role) {
+        // Start with all users
+        ArrayList<User> users = new ArrayList<>();
+
+        // Filter by role if provided
+        if (role != null && !role.isEmpty()) {
+            for(User user : userStore.values()){
+                if(user.equals(user.getRole() , role)){
+                    users.add(user) ;
+                }
+            }
+        }
+        return users;
+    }
+
+
+
 }
