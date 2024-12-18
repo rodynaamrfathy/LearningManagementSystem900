@@ -6,11 +6,6 @@ public class Student extends User {
         this.setRole("Student");
     }
 
-    @Override
-    public void specificFunctionality() {
-        System.out.println("Student-specific functionality.");
-    }
-
     public void enrollInCourse(String courseName) {
         System.out.println("Enrolled in course: " + courseName);
     }

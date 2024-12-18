@@ -6,11 +6,6 @@ public class Instructor extends User {
         this.setRole("Instructor");
     }
 
-    @Override
-    public void specificFunctionality() {
-        System.out.println("Instructor-specific functionality.");
-    }
-
     public void createCourse(String courseName) {
         System.out.println("Created course: " + courseName);
     }

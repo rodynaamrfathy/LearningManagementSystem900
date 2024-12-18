@@ -1,6 +1,6 @@
 package com.lms.LearningManagementSystem.Service;
 
-import com.lms.LearningManagementSystem.Model.User.User;
+import com.lms.LearningManagementSystem.Model.User.*;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -25,10 +25,34 @@ public class UserService {
 
     // Add a new user
     public User addUser(User user) {
+        // Validate and set role
+        if (user.getRole() == null || user.getRole().isEmpty()) {
+            throw new IllegalArgumentException("User role is required");
+        }
+
+        User newUser;
+        switch (user.getRole().toLowerCase()) {
+            case "admin":
+                newUser = new Admin();
+                break;
+            case "instructor":
+                newUser = new Instructor();
+                break;
+            case "student":
+                newUser = new Student();
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid role. Valid roles are Admin, Instructor, and Student.");
+        }
+
+        newUser.setName(user.getName());
+        newUser.setEmail(user.getEmail());
+        newUser.setPassword(user.getPassword());
+
         long id = idGenerator.getAndIncrement();
-        user.setId(id);
-        userStore.put(id, user);
-        return user;
+        newUser.setId(id);
+        userStore.put(id, newUser);
+        return newUser;
     }
 
     // Update an existing user

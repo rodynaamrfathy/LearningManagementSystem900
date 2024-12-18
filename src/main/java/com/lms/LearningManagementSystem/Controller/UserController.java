@@ -3,6 +3,8 @@ package com.lms.LearningManagementSystem.Controller;
 import com.lms.LearningManagementSystem.Model.User.User;
 import com.lms.LearningManagementSystem.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,8 +17,13 @@ public class UserController {
     private UserService userService; // Use the interface instead of the implementation
 
     @PostMapping("/create")
-    public User createUser(@RequestBody User user) {
-        return userService.addUser(user);
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        try {
+            User createdUser = userService.addUser(user);
+            return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping

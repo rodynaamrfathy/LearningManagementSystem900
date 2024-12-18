@@ -6,11 +6,6 @@ public class Admin extends User {
         this.setRole("Admin");
     }
 
-    @Override
-    public void specificFunctionality() {
-        System.out.println("Admin-specific functionality.");
-    }
-
     public void createUser(User user) {
         System.out.println("Created user: " + user.getName());
     }
