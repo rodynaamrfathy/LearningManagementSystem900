@@ -1,24 +1,24 @@
 package com.lms.LearningManagementSystem.Service;
 
 import com.lms.LearningManagementSystem.Model.Assessment.*;
-
 import java.util.*;
 import java.util.AbstractMap.SimpleEntry;
-import java.util.Map;
 import java.util.Map.Entry;
 
-public class AssessmentService {
+import org.springframework.stereotype.Service;
+
+@Service
+public class AssessmentService implements IAssessmentService {
     private List<Quiz> quizzes = new ArrayList<>();
     private List<Assignment> assignments = new ArrayList<>();
-    private List<Grading> gradings = new ArrayList<>();
+    private List<Grading> gradings = new ArrayList<>(); 
     private Long idCounter = 1L;
-    private Long idCount = 1L;
     private Long idAssignmentCounter = 1L;
-    // List<Question> selectedQuestions = new ArrayList<>();
     public List<Question> Questions = new ArrayList<>();
     public Map<String, String> submission = new HashMap<>();
 
     // Create Quiz
+     @Override
     public Quiz createQuiz(String title, int num, int totalMarks) {
         // Ensure the requested number of questions does not exceed the available questions
         if (num > Questions.size()) {
@@ -47,7 +47,7 @@ public class AssessmentService {
 
         return quiz;
     }
-
+    @Override
     public void SubmitQuiz(Long quizId, Map<String, String> answers) {
         // Iterate over the Map's entry set
         // Iterate over the entries in each map
@@ -57,8 +57,9 @@ public class AssessmentService {
             submission.put(questionID, answer);  // Add the new map to the list
 
         }
-    }
 
+    }
+    @Override
     public int correctAnswersCount(Long quizId, Long studentId) {
         int count = 0;
         for (Map.Entry<String, String> ans : submission.entrySet()) {
@@ -78,6 +79,7 @@ public class AssessmentService {
 
 
     // create Questions bank
+    @Override
     public void addQuestions(List<Question> questions) {
         if (questions != null && !questions.isEmpty()) {
             for (Question question : questions) {
@@ -89,12 +91,13 @@ public class AssessmentService {
             throw new IllegalArgumentException("No questions provided!");
         }
     }
-
+    @Override
     public List<Question> GetQuestions() {
         return new ArrayList<>(Questions);
     }
 
     // Get Quiz by ID
+    @Override
     public Quiz findQuizById(Long id) {
         for (Quiz quiz : quizzes) {
             if (quiz.getId().equals(id)) {
@@ -103,12 +106,13 @@ public class AssessmentService {
         }
         return null; // Return null if no quiz is found
     }
-
+    @Override
     public List<Quiz> GetAllquizzes() {
         return new ArrayList<>(quizzes);
     }
 
     // Create Assignment
+    @Override
     public Assignment createAssignment(String title, String description) {
         Assignment assignment = new Assignment(idCounter++, title, description);
         assignments.add(assignment);
@@ -116,14 +120,19 @@ public class AssessmentService {
     }
 
     // Submit Assignment
+    @Override
     public void submitAssignment(Long assignmentId, String fileName, Long studID) {
         Assignment assignment = findAssignmentById(assignmentId);
         if (assignment != null) {
-            assignment.submitFile(fileName, studID);
+            assignment.submitFile( studID,fileName);
         }
+        System.out.println("Submitting assignment for student ID: " + studID + ", Assignment ID: " + assignmentId + ", File: " + fileName);
+        System.out.println("Submitted Files: " + assignment.getSubmittedFiles());
+
     }
 
     // Get Assignment by ID
+    @Override
     public Assignment findAssignmentById(Long id) {
         for (Assignment a : assignments) {
             if (a.getId().equals(id)) {
@@ -132,17 +141,19 @@ public class AssessmentService {
         }
         return null; // Return null if no quiz is found
     }
-
+    @Override
     public List<Assignment> GetAllAssignments() {
         return new ArrayList<>(assignments);
     }
 
     // Grade Assessment
+    @Override
     public void gradeAssignment(Long studentId, Long assessmentId, int marks, String feedback) {
         gradings.add(new Grading(idAssignmentCounter++, studentId, assessmentId, marks, feedback));
     }
 
     // Get Gradings
+    @Override
     public List<Grading> getGradingsForStudent(Long studentId) {
         List<Grading> result = new ArrayList<>();
         for (Grading grading : gradings) {
@@ -151,5 +162,39 @@ public class AssessmentService {
             }
         }
         return result;
+    }
+    @Override
+    public Map<String, Object> trackStudentPerformance(Long studentId) {
+        Map<String, Object> performance = new HashMap<>();
+
+        performance.put("Assignments", trackStudentAssignments(studentId));
+        performance.put("Quizzes", trackStudentQuizPerformance(studentId));
+
+        return performance;
+    }
+    @Override
+    public List<Assignment> trackStudentAssignments(Long studentId) {
+        List<Assignment> submittedAssignments = new ArrayList<>();
+        for (Assignment assignment : assignments) {
+            // Check if the student ID exists in the submitted files
+            for (Map.Entry<Long, String> entry : assignment.getSubmittedFiles()) {
+                if (entry.getKey().equals(studentId)) {
+                    submittedAssignments.add(assignment);
+                    break;
+                }
+            }
+        }
+        return submittedAssignments;
+    }
+
+    @Override
+    public List<Grading> trackStudentQuizPerformance(Long studentId) {
+        List<Grading> quizGrades = new ArrayList<>();
+        for (Grading grading : gradings) {
+            if (grading.getStudentId().equals(studentId) && grading.getAssessmentID() != null) {
+                quizGrades.add(grading);
+            }
+        }
+        return quizGrades;
     }
 }
