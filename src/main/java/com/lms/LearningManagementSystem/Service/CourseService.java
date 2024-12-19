@@ -1,9 +1,9 @@
 package com.lms.LearningManagementSystem.Service;
-import com.lms.LearningManagementSystem.Model.Instructor;
+import com.lms.LearningManagementSystem.Model.User.Instructor;
 import org.springframework.stereotype.Service;
 import com.lms.LearningManagementSystem.Model.Course;
 import com.lms.LearningManagementSystem.Model.Lesson;
-import com.lms.LearningManagementSystem.Model.User;
+import com.lms.LearningManagementSystem.Model.User.User;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;

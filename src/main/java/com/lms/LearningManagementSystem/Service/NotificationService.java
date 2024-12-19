@@ -1,6 +1,6 @@
 package com.lms.LearningManagementSystem.Service;
 import com.lms.LearningManagementSystem.Model.Notification;
-import com.lms.LearningManagementSystem.Model.User;
+import com.lms.LearningManagementSystem.Model.User.User;
 import org.springframework.stereotype.Service;
 import java.util.*;
 

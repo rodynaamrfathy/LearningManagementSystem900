@@ -1,5 +1,6 @@
 package com.lms.LearningManagementSystem.Controller;
 
+import com.lms.LearningManagementSystem.Model.Course;
 import com.lms.LearningManagementSystem.Model.User.User;
 import com.lms.LearningManagementSystem.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

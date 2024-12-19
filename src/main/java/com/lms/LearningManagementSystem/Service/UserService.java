@@ -1,5 +1,6 @@
 package com.lms.LearningManagementSystem.Service;
 
+import com.lms.LearningManagementSystem.Model.Course;
 import com.lms.LearningManagementSystem.Model.User.*;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ public class UserService {
      private final CourseService courseService;
  private final NotificationService notificationService;
 
-    public UserServiceImpl(CourseService courseService, NotificationService notificationService) {
+    public UserService(CourseService courseService, NotificationService notificationService) {
         this.courseService = courseService;
         this.notificationService = notificationService;
     }

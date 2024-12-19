@@ -1,4 +1,6 @@
 package com.lms.LearningManagementSystem.Model;
+import com.lms.LearningManagementSystem.Model.User.Instructor;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -68,6 +70,8 @@ public class Course {
     public void setTitle(String title) {
         this.title=title;
     }
+
+
 }
 
 

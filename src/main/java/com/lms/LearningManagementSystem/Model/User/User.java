@@ -1,8 +1,14 @@
 package com.lms.LearningManagementSystem.Model.User;
 
+import com.lms.LearningManagementSystem.Model.Notification;
 import lombok.Data;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
+@Component
 public class User {
     private Long id;
     private String name;
