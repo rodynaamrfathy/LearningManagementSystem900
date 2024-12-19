@@ -12,6 +12,14 @@ public class UserService {
 
     private final Map<Long, User> userStore = new ConcurrentHashMap<>();
     private final AtomicLong idGenerator = new AtomicLong(1); // Atomic for synchronization
+     private final CourseService courseService;
+ private final NotificationService notificationService;
+
+    public UserServiceImpl(CourseService courseService, NotificationService notificationService) {
+        this.courseService = courseService;
+        this.notificationService = notificationService;
+    }
+
 
     // Retrieve all users
     public List<User> getAllUsers() {
@@ -84,6 +92,100 @@ public class UserService {
         }
         return users;
     }
+      public boolean enrollInCourse(Long userId, String courseId) {
+      User user = userStore.get(userId);
+        if (user == null) {
+           return false; // User doesn't exist
+        }
+        Course course = courseService.findCourseById(courseId);
+        if (course != null && !course.getEnrolledStudents().contains(userId)) {
+            // Add student to course
+            course.getEnrolledStudents().add(Long.parseLong(String.valueOf(userId)));
+            // Notify student
+            notificationService.notifyUser(userId,
+                   "You have been enrolled in the course: " + course.getTitle());
+            // Notify instructor
+            if (course.getInstructor() != null) {
+                notificationService.notifyUser(course.getInstructor().getId(),
+                        "A new student has enrolled in your course: " + course.getTitle());
+            }
+            return true;
+        }
+        return false;
+    }
+    public List<User> getUsersByRole(String role) {
+        List<User> filteredUsers = new ArrayList<>();
+
+        for (User user : userStore.values()) {
+            if ("Student".equalsIgnoreCase(role) && user instanceof Student) {
+                filteredUsers.add(user);
+            } else if ("Instructor".equalsIgnoreCase(role) && user instanceof Instructor) {
+                filteredUsers.add(user);
+            } else if ("Admin".equalsIgnoreCase(role) && user instanceof Admin) {
+                filteredUsers.add(user);
+            }
+        }
+
+        return filteredUsers;
+    }
+    public boolean assignInstructorToCourse(Long instructorId, String courseId) {
+        User user = userStore.get(instructorId);
+        if (user == null || !(user instanceof Instructor)) {
+            return false; // User is either not found or not an instructor
+        }
+
+        Course course = courseService.findCourseById(courseId);
+        if (course == null) {
+            return false; // Course not found
+        }
+
+        // Assign the instructor to the course
+        course.setInstructor((Instructor) user);
+
+
+        // Notify the instructor about the assignment
+        notificationService.notifyUser(instructorId,
+                "You have been assigned to teach the course: " + course.getTitle());
+
+        // Notify students about the new instructor
+        for (Long studentId : course.getEnrolledStudents()) {
+            notificationService.notifyUser(studentId,
+                    "The course " + course.getTitle() + " now has a new instructor: " + user.getName());
+        }
+
+        return true;
+    }
+
+
+    // Instructor generates OTP for a lesson
+    public String generateOtpForLesson(Long instructorId, String courseId, String lessonId) {
+        User user = userStore.get(instructorId);
+        if (user instanceof Instructor) {
+            return courseService.generateOtp(courseId, lessonId);
+        }
+        return null; // Only instructors can generate OTPs
+    }
+
+    // Student enters OTP to mark attendance
+    public boolean markAttendance(Long studentId, String courseId, String lessonId, String otp) {
+        User user = userStore.get(studentId);
+        if (user instanceof Student) {
+            return courseService.markAttendance(courseId, lessonId, String.valueOf(studentId), true);
+        }
+        return false;
+    }
+    public Course createCourse( String title, String description, int duration) {
+            return courseService.createCourse(title, description, duration);
+    }
+    public Course updateCourse(String courseId, String title, String description, int duration) {
+        Course course = courseService.findCourseById(courseId);
+        return courseService.updateCourse(courseId,title,description,duration);
+    }
+    public boolean deleteCourse(String courseId) {
+        Course course = courseService.findCourseById(courseId);
+        return courseService.deleteCourse(courseId);
+    }
+
 
 
 
