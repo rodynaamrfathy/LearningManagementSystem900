@@ -3,21 +3,19 @@ package com.lms.LearningManagementSystem.Model.Assessment;
 public class Grading {
     private Long id;
     private Long studentId;
-    // private String type; // "Quiz" or "Assignment"
-    private Long AssessmentID; // Quiz or Assignment ID
-    private int marks;
+    private String type; // "Quiz" or "Assignment"
+    private String marks;
     private String feedback;
 
-    public Grading(Long id, Long studentId, Long AssessmentID, int marks, String feedback) {
+    public Grading(Long id, Long studentId, String type, String marks, String feedback) {
         this.id = id;
         this.studentId = studentId;
-        // this.type = type;
-        this.AssessmentID = AssessmentID;
+        this.type = type;
         this.marks = marks;
         this.feedback = feedback;
     }
 
-    public Grading(Long id, Long studentId, int marks) {
+    public Grading(Long id, Long studentId, String marks) {
         this.id = id;
         this.studentId = studentId;
         this.marks = marks;
@@ -42,26 +40,19 @@ public class Grading {
         this.studentId = studentId;
     }
 
-    //    public String getType() {
-//        return type;
-//    }
-//    public void setType(String type) {
-//        this.type = type;
-//
-//    }
-    public Long getAssessmentID() {
-        return AssessmentID;
+        public String getType() {
+        return type;
+    }
+    public void setType(String type) {
+        this.type = type;
+
     }
 
-    public void setAssessmentID(Long assignmentId) {
-        this.AssessmentID = assignmentId;
-    }
-
-    public int getMarks() {
+    public String getMarks() {
         return marks;
     }
 
-    public void setMarks(int marks) {
+    public void setMarks(String marks) {
         this.marks = marks;
     }
 
