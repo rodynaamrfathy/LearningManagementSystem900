@@ -3,6 +3,7 @@ package com.lms.LearningManagementSystem.Model.User;
 import lombok.Data;
 
 @Data
+@Component
 public class User {
     private Long id;
     private String name;
