@@ -91,9 +91,4 @@ public class AssessmentController {
         return "Assignment graded successfully!";
     }
 
-    // Get Gradings for Student
-    @GetMapping("/grades/{studentId}")
-    public List<Grading> getGradingsForStudent(@PathVariable Long studentId) {
-        return service.getGradingsForStudent(studentId);
-    }
 }
