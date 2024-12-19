@@ -3,7 +3,7 @@ package com.lms.LearningManagementSystem.Model.Assessment;
 public class Grading {
     private Long id;
     private Long studentId;
-    private String type; // "Quiz" or "Assignment"
+    private String type;   // "Quiz" or "Assignment"
     private String marks;
     private String feedback;
 
