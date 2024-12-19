@@ -1,17 +1,20 @@
 package com.lms.LearningManagementSystem.Controller;
 
 import com.lms.LearningManagementSystem.Model.Assessment.*;
-import com.lms.LearningManagementSystem.Service.AssessmentService;
+import com.lms.LearningManagementSystem.Service.IAssessmentService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.*;
 
 @RestController
 @RequestMapping("/api/Assessments")
 
-public class AssessmentController {
-    private final AssessmentService service = new AssessmentService();
 
+public class AssessmentController {
+    @Autowired
+    private IAssessmentService service;
     // Create Quiz
     @PostMapping("/quiz")
     public Quiz createQuiz(@RequestBody Map<String, Object> payload) {
@@ -25,7 +28,6 @@ public class AssessmentController {
     public String submitQuizAnswers(@PathVariable Long quizId, @RequestBody Map<String, Object> payload) {
         Long studentId = ((Number) payload.get("studentId")).longValue();
         Map<String, String> submission = (Map<String, String>) payload.get("answers");
-
         service.SubmitQuiz(quizId, submission);
         int correctAnswersCount = service.correctAnswersCount(quizId, studentId);
         return "You got " + correctAnswersCount + " correct answers!";
@@ -68,6 +70,7 @@ public class AssessmentController {
         Long studID = ((Number) payload.get("StudentID")).longValue();
         service.submitAssignment(assignmentId,fileName,studID);
         return "Assignment submitted successfully!";
+        
     }
     @GetMapping("/assignment/{assignmentId}")
     public Assignment getAssignmentById(@PathVariable Long assignmentId) {
@@ -84,11 +87,12 @@ public class AssessmentController {
     @PostMapping("/grade")
     public String gradeAssignment(@RequestBody Map<String, Object> payload) {
         Long studentId = ((Number) payload.get("studentId")).longValue();
-        Long assessmentId = ((Number) payload.get("assessmentId")).longValue();
-        int marks = (int) payload.get("marks");
+        //String type = (String) payload.get("assessmentType") ;
+        String marks =  (String)payload.get("marks");
         String feedback = (String) payload.get("feedback");
-        service.gradeAssignment(studentId, assessmentId, marks, feedback);
+        service.gradeAssignment(studentId,"Assignment", marks, feedback);
         return "Assignment graded successfully!";
     }
 
+ 
 }
