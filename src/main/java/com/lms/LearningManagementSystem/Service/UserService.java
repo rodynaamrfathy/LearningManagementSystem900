@@ -1,6 +1,7 @@
 package com.lms.LearningManagementSystem.Service;
 
 import com.lms.LearningManagementSystem.Model.Course;
+import com.lms.LearningManagementSystem.Model.Assessment.*;
 import com.lms.LearningManagementSystem.Model.User.*;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +16,12 @@ public class UserService {
     private final AtomicLong idGenerator = new AtomicLong(1); // Atomic for synchronization
      private final CourseService courseService;
  private final NotificationService notificationService;
+    private final AssessmentService assessmentService;
 
-    public UserService(CourseService courseService, NotificationService notificationService) {
+    public UserService(CourseService courseService, NotificationService notificationService,AssessmentService assessmentService)  {
         this.courseService = courseService;
         this.notificationService = notificationService;
+        this.assessmentService = assessmentService;
     }
 
 
@@ -187,6 +190,72 @@ public class UserService {
         return courseService.deleteCourse(courseId);
     }
 
+       public Quiz createQuiz(String title, int num, int totalMarks) {
+        return assessmentService.createQuiz(title, num, totalMarks);
+    }
+
+    public void SubmitQuiz(Long quizId, Map<String, String> answers) {
+        assessmentService.SubmitQuiz(quizId, answers);
+    }
+
+    public int correctAnswersCount(Long quizId, Long studentId) {
+        return assessmentService.correctAnswersCount(quizId, studentId);
+    }
+
+    // create Questions bank
+    public void addQuestions(List<Question> questions) {
+        assessmentService.addQuestions(questions); }
+
+    public List<Question> GetQuestions() {
+        return assessmentService.GetQuestions();
+    }
+
+    // Get Quiz by ID
+    public Quiz findQuizById(Long id) {
+        return assessmentService.findQuizById(id);
+    }
+
+    public List<Quiz> GetAllquizzes() {
+        return assessmentService.GetAllquizzes();
+    }
+
+    // Create Assignment
+
+    public Assignment createAssignment(String title, String description) {
+        return assessmentService.createAssignment(title, description);
+    }
+
+    // Submit Assignment
+    public void submitAssignment(Long assignmentId, String fileName, Long studID) {
+        assessmentService.submitAssignment(assignmentId, fileName, studID);
+    }
+
+    // Get Assignment by ID
+    public Assignment findAssignmentById(Long id) {
+        return assessmentService.findAssignmentById(id);
+    }
+
+    public List<Assignment> GetAllAssignments() {
+        return assessmentService.GetAllAssignments();
+    }
+
+    // Grade Assessment
+    public void gradeAssignment(Long studentId, String type, String marks, String feedback) {
+        assessmentService.gradeAssignment(studentId, type, marks, feedback);
+    }
+
+    // Get Gradings
+    public List<Grading> trackStudentPerformance(Long studentId) {
+        return assessmentService.trackStudentPerformance(studentId);
+    }
+
+    public List<Grading> trackStudentAssignments(Long studentId) {
+        return assessmentService.trackStudentAssignments(studentId);
+    }
+
+    public List<Grading> trackStudentQuizPerformance(Long studentId) {
+        return assessmentService.trackStudentQuizPerformance(studentId);
+    }
 
 
 
