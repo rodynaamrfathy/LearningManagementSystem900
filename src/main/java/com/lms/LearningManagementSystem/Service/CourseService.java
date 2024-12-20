@@ -1,5 +1,7 @@
 package com.lms.LearningManagementSystem.Service;
 import com.lms.LearningManagementSystem.Model.User.Instructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import com.lms.LearningManagementSystem.Model.Course;
 import com.lms.LearningManagementSystem.Model.Lesson;
@@ -10,13 +12,12 @@ import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class CourseService implements ICourseService{
-    private final AtomicLong idGenerator = new AtomicLong(1); // Atomic for
+    private final AtomicLong idGenerator = new AtomicLong(1);
     private final List<Course> courses = new ArrayList<>();
-    private final Map<String, User> users = new HashMap<>(); // Simulated user database
     private final NotificationService notificationService;
 
-    public CourseService(NotificationService notificationService) {
-
+    @Autowired
+    public CourseService(@Lazy NotificationService notificationService) {
         this.notificationService = notificationService;
     }
     private String generateId() {

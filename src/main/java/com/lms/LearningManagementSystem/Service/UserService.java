@@ -3,6 +3,8 @@ package com.lms.LearningManagementSystem.Service;
 import com.lms.LearningManagementSystem.Model.Course;
 import com.lms.LearningManagementSystem.Model.Assessment.*;
 import com.lms.LearningManagementSystem.Model.User.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -14,15 +16,23 @@ public class UserService {
 
     private final Map<Long, User> userStore = new ConcurrentHashMap<>();
     private final AtomicLong idGenerator = new AtomicLong(1); // Atomic for synchronization
-     private final CourseService courseService;
- private final NotificationService notificationService;
-    private final AssessmentService assessmentService;
+    @Autowired
+    @Qualifier("courseService")
+    private ICourseService courseService;
 
-    public UserService(CourseService courseService, NotificationService notificationService,AssessmentService assessmentService)  {
+    @Autowired
+    @Qualifier("notificationService")
+    private INotificationService notificationService;
+
+    @Autowired
+    private AssessmentService assessmentService;
+
+    public UserService(ICourseService courseService, INotificationService notificationService, AssessmentService assessmentService) {
         this.courseService = courseService;
         this.notificationService = notificationService;
         this.assessmentService = assessmentService;
     }
+
 
 
     // Retrieve all users

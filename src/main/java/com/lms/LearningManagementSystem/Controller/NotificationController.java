@@ -16,15 +16,14 @@ public class NotificationController {
     }
 
     @GetMapping("/{userId}")
-    public List<Notification> getNotifications(@PathVariable String userId, @RequestParam(defaultValue = "false") boolean onlyUnread) {
+    public List<Notification> getNotifications(@PathVariable Long userId, @RequestParam(defaultValue = "false") boolean onlyUnread) {
         return notificationService.getNotifications(userId, onlyUnread);
     }
 
     @PostMapping("/{userId}/{notificationId}/read")
-    public String markNotificationAsRead(@PathVariable String userId, @PathVariable String notificationId) {
+    public String markNotificationAsRead(@PathVariable Long userId, @PathVariable String notificationId) {
         notificationService.markNotificationAsRead(userId, notificationId);
         return "Notification marked as read.";
     }
 }
-
 
