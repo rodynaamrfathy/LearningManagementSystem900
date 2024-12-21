@@ -42,7 +42,6 @@ class CourseServiceTest {
 		assertEquals(description, createdCourse.getDescription());
 		assertEquals(duration, createdCourse.getDuration());
 	}
-
 	@Test
 	void testFindCourseById() {
 		// Arrange

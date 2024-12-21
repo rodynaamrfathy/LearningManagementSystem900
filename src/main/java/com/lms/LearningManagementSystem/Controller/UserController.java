@@ -2,6 +2,9 @@ package com.lms.LearningManagementSystem.Controller;
 import com.lms.LearningManagementSystem.Model.Assessment.*;
 import com.lms.LearningManagementSystem.Model.Course;
 import com.lms.LearningManagementSystem.Model.User.User;
+import com.lms.LearningManagementSystem.Service.AdminService;
+import com.lms.LearningManagementSystem.Service.InstructorService;
+import com.lms.LearningManagementSystem.Service.StudentService;
 import com.lms.LearningManagementSystem.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -66,26 +69,26 @@ public class UserController {
 
      @PostMapping("/{userId}/enroll")
     public boolean enrollInCourse(@PathVariable Long userId, @RequestParam String courseId) {
-        return userService.enrollInCourse(userId, courseId);
+        return StudentService.enrollInCourse(userId, courseId);
     }
 
     // Assign instructor to a course
     @PostMapping("/{instructorId}/assign/{courseId}")
     public boolean assignInstructorToCourse(@PathVariable Long instructorId, @PathVariable String courseId) {
-        return userService.assignInstructorToCourse(instructorId, courseId);
+        return InstructorService.assignInstructorToCourse(instructorId, courseId);
     }
 
     // Instructor generates OTP for a lesson
     @PostMapping("/generate-otp/{instructorId}/{courseId}/{lessonId}")
     public String generateOtpForLesson(@PathVariable Long instructorId, @PathVariable String courseId, @PathVariable String lessonId) {
-        return userService.generateOtpForLesson(instructorId, courseId, lessonId);
+        return InstructorService.generateOtpForLesson(instructorId, courseId, lessonId);
     }
 
     // Student enters OTP to mark attendance
     @PostMapping("/mark-attendance/{studentId}/{courseId}/{lessonId}")
     public boolean markAttendance(@PathVariable Long studentId, @PathVariable String courseId, @PathVariable String lessonId,
                                   @RequestParam String otp) {
-        return userService.markAttendance(studentId, courseId, lessonId, otp);
+        return InstructorService.markAttendance(studentId, courseId, lessonId, otp);
     }
 
     // Create a course
@@ -95,7 +98,7 @@ public class UserController {
             @RequestParam String description,
             @RequestParam int duration) {
         try {
-            Course course = userService.createCourse( title, description, duration);
+            Course course = AdminService.createCourse( title, description, duration);
             return new ResponseEntity<>(course, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -109,7 +112,7 @@ public class UserController {
             @RequestParam String description,
             @RequestParam int duration) {
         try {
-            Course updatedCourse = userService.updateCourse( courseId, title, description, duration);
+            Course updatedCourse = AdminService.updateCourse( courseId, title, description, duration);
             return ResponseEntity.ok(updatedCourse);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -119,7 +122,7 @@ public class UserController {
     @DeleteMapping("/courses/{courseId}/delete")
     public ResponseEntity<String> deleteCourse(@PathVariable String courseId) {
         try {
-            boolean isDeleted = userService.deleteCourse(courseId);
+            boolean isDeleted = AdminService.deleteCourse(courseId);
             if (isDeleted) {
                 return ResponseEntity.ok("Course deleted successfully.");
             } else {
@@ -135,7 +138,7 @@ public class UserController {
         String title = (String) payload.get("title");
         int totalMarks = (int) payload.get("totalMarks");
         int num = (int) payload.get("num");
-        return userService.createQuiz(title,num, totalMarks);
+        return InstructorService.createQuiz(title,num, totalMarks);
     }
 
     @PostMapping("/quiz/{quizId}/submit")
@@ -143,8 +146,8 @@ public class UserController {
         Long studentId = ((Number) payload.get("studentId")).longValue();
         Map<String, String> submission = (Map<String, String>) payload.get("answers");
 
-        userService.SubmitQuiz(quizId, submission);
-        int correctAnswersCount = userService.correctAnswersCount(quizId, studentId);
+        StudentService.SubmitQuiz(quizId, submission);
+        int correctAnswersCount = InstructorService.correctAnswersCount(quizId, studentId);
         return "You got " + correctAnswersCount + " correct answers!";
     }
     // create Questions bank
@@ -153,32 +156,32 @@ public class UserController {
         if (questions == null || questions.isEmpty()) {
             return "No questions provided!";
         }
-        userService.addQuestions(questions);
+        InstructorService.addQuestions(questions);
         return "Questions added successfully!";
     }
 
     @GetMapping("/quiz/{quizId}")
     public Quiz getQuizById(@PathVariable Long quizId) {
-        return userService.findQuizById(quizId);
+        return StudentService.findQuizById(quizId);
     }
 
     @GetMapping("/questions")
     public List<Question> getAllQuestions() {
 
-        return userService.GetQuestions();
+        return StudentService.GetQuestions();
     }
 
     @GetMapping("/quizzes")
     public List<Quiz> GetAllquizzes() {
 
-        return userService.GetAllquizzes();
+        return StudentService.GetAllquizzes();
     }
 
     @PostMapping("/assignment")
     public Assignment createAssignment(@RequestBody Map<String, Object> payload) {
         String title = (String) payload.get("title");
         String description = (String) payload.get("description");
-        return userService.createAssignment(title, description);
+        return InstructorService.createAssignment(title, description);
     }
 
     // Submit Assignment
@@ -186,19 +189,19 @@ public class UserController {
     public String submitAssignment(@PathVariable Long assignmentId, @RequestBody Map<String, Object> payload) {
         String fileName = (String) payload.get("fileName");
         Long studID = ((Number) payload.get("StudentID")).longValue();
-        userService.submitAssignment(assignmentId,fileName,studID);
+        StudentService.submitAssignment(assignmentId,fileName,studID);
         return "Assignment submitted successfully!";
 
     }
 
     @GetMapping("/assignment/{assignmentId}")
     public Assignment getAssignmentById(@PathVariable Long assignmentId) {
-        return userService.findAssignmentById(assignmentId);
+        return StudentService.findAssignmentById(assignmentId);
     }
 
     @GetMapping("/assignments")
     public List<Assignment> GetAllAssignments() {
-        return userService.GetAllAssignments();
+        return StudentService.GetAllAssignments();
     }
 
 
@@ -209,25 +212,25 @@ public class UserController {
         //String type= (String) payload.get("assessmentType");
         String marks = (String) payload.get("marks");
         String feedback = (String) payload.get("feedback");
-        userService.gradeAssignment(studentId, "Assignment", marks, feedback);
+        InstructorService.gradeAssignment(studentId, "Assignment", marks, feedback);
         return "Assignment graded successfully!";
     }
 
     // Get Gradings for Student
     @GetMapping("/track/{studentId}")
     public List<Grading> trackStudentPerformance(@PathVariable Long studentId) {
-        return userService.trackStudentPerformance(studentId);
+        return InstructorService.trackStudentPerformance(studentId);
     }
 
     @GetMapping("/assignments/{studentId}")
     public List<Grading>  trackStudentAssignments(@PathVariable Long studentId) {
-        return userService.trackStudentAssignments(studentId);
+        return InstructorService.trackStudentAssignments(studentId);
     }
 
 
     @GetMapping("/quiz/{studentId}")
     public List<Grading> trackStudentQuizPerformance(@PathVariable Long studentId) {
-        return userService.trackStudentQuizPerformance(studentId);
+        return InstructorService.trackStudentQuizPerformance(studentId);
     }
     
 

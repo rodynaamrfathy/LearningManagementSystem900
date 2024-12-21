@@ -18,12 +18,6 @@ public class CourseController {
         this.courseService = courseService;
     }
 
-    // Create a new course
-    @PostMapping
-    public Course createCourse(@RequestParam String title, @RequestParam String description, @RequestParam int duration) {
-        return courseService.createCourse(title, description, duration);
-    }
-
     // Add media to a course
     @PostMapping("/{courseId}/media")
     public String addMediaFile(@PathVariable String courseId, @RequestParam String mediaFile) {
@@ -37,13 +31,6 @@ public class CourseController {
         return courseService.addLesson(courseId, title, content);
     }
 
-
-    // Generate OTP for a lesson
-    @GetMapping("/{courseId}/lessons/{lessonId}/otp")
-    public String generateOtp(@PathVariable String courseId, @PathVariable String lessonId) {
-        String otp = courseService.generateOtp(courseId, lessonId);
-        return otp != null ? "Generated OTP: " + otp : "Failed to generate OTP.";
-    }
 
     // Mark attendance for a lesson
     @PostMapping("/{courseId}/lessons/{lessonId}/attendance")
@@ -79,11 +66,5 @@ public class CourseController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found");
         }
     }
-    @PutMapping("/{courseId}/update")
-    public Course updateCourse(@PathVariable String courseId,
-                               @RequestParam String title,
-                               @RequestParam String description,
-                               @RequestParam int duration) {
-        return courseService.updateCourse(courseId, title, description, duration);
-    }
+
 }
