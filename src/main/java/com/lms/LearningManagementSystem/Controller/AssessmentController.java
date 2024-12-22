@@ -42,10 +42,12 @@ public class AssessmentController {
         service.addQuestions(questions);
         return "Questions added successfully!";
     }
-    @GetMapping("/quiz/{quizId}")
-    public Quiz getQuizById(@PathVariable Long quizId) {
-        return service.findQuizById(quizId);
-    }
+    
+    // @GetMapping("/quiz/{quizId}")
+    // public Quiz getQuizById(@PathVariable Long quizId) {
+    //     return service.findQuizById(quizId);
+    // }
+    
     @GetMapping("/questions")
     public List<Question> getAllQuestions() {
         return service.GetQuestions();
