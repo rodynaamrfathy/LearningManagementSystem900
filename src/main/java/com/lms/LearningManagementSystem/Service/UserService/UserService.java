@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicLong;
 @Service
 public class UserService {
 
-    protected static final Map<Long, User> userStore = new ConcurrentHashMap<>();
+   public static final Map<Long, User> userStore = new ConcurrentHashMap<>();
     protected final AtomicLong idGenerator = new AtomicLong(1); // Atomic for synchronization
     @Autowired
     @Qualifier("courseService")
