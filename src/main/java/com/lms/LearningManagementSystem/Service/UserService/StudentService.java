@@ -59,12 +59,13 @@ public class StudentService extends UserService {
         return assessmentService.GetAllAssignments();
     }
 
-   
+    public static Quiz findQuizById(Long id) {
+        return assessmentService.findQuizById(id);
+    }
 
-    // Get Quiz by ID
-    // public static Quiz findQuizById(Long id) {
-    //     return assessmentService.findQuizById(id);
-    // }
+    public static List<Question> GetQuestions() {
+        return assessmentService.GetQuestions();
+    }
 
     public static List<Quiz> GetAllquizzes() {
         return assessmentService.GetAllquizzes();
