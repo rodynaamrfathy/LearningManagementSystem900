@@ -36,10 +36,10 @@ public class QuizController {
         return "You got " + correctAnswersCount + " correct answers!";
     }
 
-    @GetMapping("/{quizId}")
-    public Quiz getQuizById(@PathVariable Long quizId) {
-        return studentService.findQuizById(quizId);
-    }
+    // @GetMapping("/{quizId}")
+    // public Quiz getQuizById(@PathVariable Long quizId) {
+    //     return studentService.findQuizById(quizId);
+    // }
 
     @GetMapping
     public List<Quiz> getAllQuizzes() {
@@ -48,7 +48,7 @@ public class QuizController {
 
     @GetMapping("/questions")
     public List<Question> getAllQuestions() {
-        return studentService.GetQuestions();
+        return instructorService.GetQuestions();
     }
 
     @PostMapping("/create/questions")

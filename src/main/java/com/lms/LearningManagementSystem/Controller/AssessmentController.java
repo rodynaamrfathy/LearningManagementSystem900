@@ -15,14 +15,13 @@ import java.util.*;
 public class AssessmentController {
     @Autowired
     private AssessmentService service;
-
     // Create Quiz
     @PostMapping("/quiz")
     public Quiz createQuiz(@RequestBody Map<String, Object> payload) {
         String title = (String) payload.get("title");
         int totalMarks = (int) payload.get("totalMarks");
         int num = (int) payload.get("num");
-        return service.createQuiz(title, num, totalMarks);
+        return service.createQuiz(title,num, totalMarks);
     }
 
     @PostMapping("/quiz/{quizId}/submit")
@@ -36,7 +35,7 @@ public class AssessmentController {
 
     // Add Question to Quiz
     @PostMapping("/create/questions")
-    public String addQuestions(@RequestBody List<Question> questions) {
+    public String addQuestions( @RequestBody List<Question> questions) {
         if (questions == null || questions.isEmpty()) {
             return "No questions provided!";
         }
@@ -53,7 +52,6 @@ public class AssessmentController {
     public List<Question> getAllQuestions() {
         return service.GetQuestions();
     }
-
     @GetMapping("/quizzes")
     public List<Quiz> GetAllquizzes() {
         return service.GetAllquizzes();
@@ -69,14 +67,13 @@ public class AssessmentController {
 
     // Submit Assignment
     @PostMapping("/assignment/{assignmentId}/submit")
-    public String submitAssignment(@PathVariable Long assignmentId, @RequestBody Map<String, Object> payload) {
+        public String submitAssignment(@PathVariable Long assignmentId, @RequestBody Map<String, Object> payload) {
         String fileName = (String) payload.get("fileName");
         Long studID = ((Number) payload.get("StudentID")).longValue();
-        service.submitAssignment(assignmentId, fileName, studID);
+        service.submitAssignment(assignmentId,fileName,studID);
         return "Assignment submitted successfully!";
-
+        
     }
-
     @GetMapping("/assignment/{assignmentId}")
     public Assignment getAssignmentById(@PathVariable Long assignmentId) {
         return service.findAssignmentById(assignmentId);
@@ -93,10 +90,11 @@ public class AssessmentController {
     public String gradeAssignment(@RequestBody Map<String, Object> payload) {
         Long studentId = ((Number) payload.get("studentId")).longValue();
         //String type = (String) payload.get("assessmentType") ;
-        String marks = (String) payload.get("marks");
+        String marks =  (String)payload.get("marks");
         String feedback = (String) payload.get("feedback");
-        service.gradeAssignment(studentId, "Assignment", marks, feedback);
+        service.gradeAssignment(studentId,"Assignment", marks, feedback);
         return "Assignment graded successfully!";
     }
 
+ 
 }
