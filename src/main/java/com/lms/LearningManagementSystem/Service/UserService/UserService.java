@@ -1,8 +1,9 @@
-package com.lms.LearningManagementSystem.Service;
+package com.lms.LearningManagementSystem.Service.UserService;
 
-import com.lms.LearningManagementSystem.Model.Course;
-import com.lms.LearningManagementSystem.Model.Assessment.*;
 import com.lms.LearningManagementSystem.Model.User.*;
+import com.lms.LearningManagementSystem.Service.AssessmentService;
+import com.lms.LearningManagementSystem.Service.ICourseService;
+import com.lms.LearningManagementSystem.Service.INotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;

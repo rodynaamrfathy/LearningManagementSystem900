@@ -1,6 +1,7 @@
 package com.lms.LearningManagementSystem.Service;
 import com.lms.LearningManagementSystem.Model.Notification;
 import com.lms.LearningManagementSystem.Model.User.User;
+import com.lms.LearningManagementSystem.Service.UserService.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;

@@ -1,18 +1,22 @@
-package com.lms.LearningManagementSystem.Service;
+package com.lms.LearningManagementSystem.Service.UserService;
 
 import com.lms.LearningManagementSystem.Model.Assessment.Assignment;
 import com.lms.LearningManagementSystem.Model.Assessment.Question;
 import com.lms.LearningManagementSystem.Model.Assessment.Quiz;
 import com.lms.LearningManagementSystem.Model.Course;
 import com.lms.LearningManagementSystem.Model.User.User;
+import com.lms.LearningManagementSystem.Service.AssessmentService;
+import com.lms.LearningManagementSystem.Service.ICourseService;
+import com.lms.LearningManagementSystem.Service.INotificationService;
 
 import java.util.List;
 import java.util.Map;
 
-public class StudentService extends UserService{
+public class StudentService extends UserService {
     public StudentService(ICourseService courseService, INotificationService notificationService, AssessmentService assessmentService) {
         super(courseService, notificationService, assessmentService);
     }
+
     public static boolean enrollInCourse(Long userId, String courseId) {
         User user = userStore.get(userId);
         if (user == null) {
@@ -34,9 +38,11 @@ public class StudentService extends UserService{
         }
         return false;
     }
+
     public static void SubmitQuiz(Long quizId, Map<String, String> answers) {
         assessmentService.SubmitQuiz(quizId, answers);
     }
+
     public static void submitAssignment(Long assignmentId, String fileName, Long studID) {
         assessmentService.submitAssignment(assignmentId, fileName, studID);
     }

@@ -1,6 +1,9 @@
-package com.lms.LearningManagementSystem.Service;
+package com.lms.LearningManagementSystem.Service.UserService;
 
 import com.lms.LearningManagementSystem.Model.Course;
+import com.lms.LearningManagementSystem.Service.AssessmentService;
+import com.lms.LearningManagementSystem.Service.ICourseService;
+import com.lms.LearningManagementSystem.Service.INotificationService;
 
 public class AdminService extends UserService{
     public AdminService(ICourseService courseService, INotificationService notificationService, AssessmentService assessmentService) {

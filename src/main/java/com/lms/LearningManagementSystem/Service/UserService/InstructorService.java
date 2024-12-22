@@ -1,4 +1,4 @@
-package com.lms.LearningManagementSystem.Service;
+package com.lms.LearningManagementSystem.Service.UserService;
 
 import com.lms.LearningManagementSystem.Model.Assessment.Assignment;
 import com.lms.LearningManagementSystem.Model.Assessment.Grading;
@@ -8,6 +8,9 @@ import com.lms.LearningManagementSystem.Model.Course;
 import com.lms.LearningManagementSystem.Model.User.Instructor;
 import com.lms.LearningManagementSystem.Model.User.Student;
 import com.lms.LearningManagementSystem.Model.User.User;
+import com.lms.LearningManagementSystem.Service.AssessmentService;
+import com.lms.LearningManagementSystem.Service.ICourseService;
+import com.lms.LearningManagementSystem.Service.INotificationService;
 
 import java.util.List;
 
