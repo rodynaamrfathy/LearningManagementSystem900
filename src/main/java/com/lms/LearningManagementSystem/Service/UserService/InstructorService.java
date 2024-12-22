@@ -76,6 +76,12 @@ public class InstructorService extends UserService {
 
     public static void addQuestions(List<Question> questions) {
         assessmentService.addQuestions(questions); }
+
+     public static List<Question> GetQuestions() {
+
+        return assessmentService.GetQuestions();
+    }
+    
     public static Assignment createAssignment(String title, String description) {
         return assessmentService.createAssignment(title, description);
     }
