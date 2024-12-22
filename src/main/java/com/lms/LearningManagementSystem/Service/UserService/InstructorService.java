@@ -75,10 +75,13 @@ public class InstructorService extends UserService {
     }
 
     public static void addQuestions(List<Question> questions) {
-        assessmentService.addQuestions(questions); }
+        assessmentService.addQuestions(questions);
+    }
+
     public static Assignment createAssignment(String title, String description) {
         return assessmentService.createAssignment(title, description);
     }
+
     public static void gradeAssignment(Long studentId, String type, String marks, String feedback) {
         assessmentService.gradeAssignment(studentId, type, marks, feedback);
     }

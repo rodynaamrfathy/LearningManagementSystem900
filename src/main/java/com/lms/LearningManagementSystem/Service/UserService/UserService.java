@@ -19,7 +19,7 @@ public class UserService {
     protected final AtomicLong idGenerator = new AtomicLong(1); // Atomic for synchronization
     @Autowired
     @Qualifier("courseService")
-   protected static CourseService courseService;
+    protected static CourseService courseService;
 
     @Autowired
     @Qualifier("notificationService")
@@ -31,7 +31,7 @@ public class UserService {
     public UserService(CourseService courseService, NotificationService notificationService, AssessmentService assessmentService) {
         this.courseService = courseService;
         this.notificationService = notificationService;
-        this.assessmentService =assessmentService;
+        this.assessmentService = assessmentService;
     }
 
     // Retrieve all users
@@ -97,9 +97,9 @@ public class UserService {
 
         // Filter by role if provided
         if (role != null && !role.isEmpty()) {
-            for(User user : userStore.values()){
-                if(user.equals(user.getRole() , role)){
-                    users.add(user) ;
+            for (User user : userStore.values()) {
+                if (user.equals(user.getRole(), role)) {
+                    users.add(user);
                 }
             }
         }
@@ -121,8 +121,6 @@ public class UserService {
 
         return filteredUsers;
     }
-
-
 
 
 }

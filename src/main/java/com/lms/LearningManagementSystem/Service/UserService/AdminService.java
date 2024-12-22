@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AdminService extends UserService {
+
     public AdminService(CourseService courseService, NotificationService notificationService, AssessmentService assessmentService) {
         super(courseService, notificationService, assessmentService);
     }
@@ -25,4 +26,5 @@ public class AdminService extends UserService {
         Course course = courseService.findCourseById(courseId);
         return courseService.deleteCourse(courseId);
     }
+
 }

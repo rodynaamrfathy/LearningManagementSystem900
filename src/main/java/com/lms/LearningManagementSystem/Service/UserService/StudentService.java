@@ -15,6 +15,7 @@ import java.util.Map;
 
 @Service
 public class StudentService extends UserService {
+
     public StudentService(CourseService courseService, NotificationService notificationService, AssessmentService assessmentService) {
         super(courseService, notificationService, assessmentService);
     }
