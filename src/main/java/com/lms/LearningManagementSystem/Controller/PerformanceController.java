@@ -1,6 +1,6 @@
 package com.lms.LearningManagementSystem.Controller;
 import com.lms.LearningManagementSystem.Model.Assessment.*;
-import com.lms.LearningManagementSystem.Service.IAssessmentService;
+import com.lms.LearningManagementSystem.Service.AssessmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
@@ -10,7 +10,7 @@ import java.util.*;
 public class PerformanceController {
 
     @Autowired
-    private IAssessmentService assessmentService;// to ensure a single instance of AssessmentService is used across the application.
+    private AssessmentService assessmentService;// to ensure a single instance of AssessmentService is used across the application.
 
      @GetMapping("/track/{studentId}")
      public List<Grading>trackStudentPerformance(@PathVariable Long studentId) {

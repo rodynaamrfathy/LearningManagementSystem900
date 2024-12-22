@@ -1,7 +1,7 @@
 package com.lms.LearningManagementSystem.Controller;
 
 import com.lms.LearningManagementSystem.Model.Assessment.*;
-import com.lms.LearningManagementSystem.Service.IAssessmentService;
+import com.lms.LearningManagementSystem.Service.AssessmentService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +14,7 @@ import java.util.*;
 
 public class AssessmentController {
     @Autowired
-    private IAssessmentService service;
+    private AssessmentService service;
     // Create Quiz
     @PostMapping("/quiz")
     public Quiz createQuiz(@RequestBody Map<String, Object> payload) {

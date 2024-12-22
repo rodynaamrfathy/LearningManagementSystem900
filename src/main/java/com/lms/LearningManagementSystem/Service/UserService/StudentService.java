@@ -6,14 +6,16 @@ import com.lms.LearningManagementSystem.Model.Assessment.Quiz;
 import com.lms.LearningManagementSystem.Model.Course;
 import com.lms.LearningManagementSystem.Model.User.User;
 import com.lms.LearningManagementSystem.Service.AssessmentService;
-import com.lms.LearningManagementSystem.Service.ICourseService;
-import com.lms.LearningManagementSystem.Service.INotificationService;
+import com.lms.LearningManagementSystem.Service.CourseService;
+import com.lms.LearningManagementSystem.Service.NotificationService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class StudentService extends UserService {
-    public StudentService(ICourseService courseService, INotificationService notificationService, AssessmentService assessmentService) {
+    public StudentService(CourseService courseService, NotificationService notificationService, AssessmentService assessmentService) {
         super(courseService, notificationService, assessmentService);
     }
 

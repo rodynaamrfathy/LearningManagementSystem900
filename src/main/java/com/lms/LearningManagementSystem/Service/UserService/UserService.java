@@ -2,8 +2,8 @@ package com.lms.LearningManagementSystem.Service.UserService;
 
 import com.lms.LearningManagementSystem.Model.User.*;
 import com.lms.LearningManagementSystem.Service.AssessmentService;
-import com.lms.LearningManagementSystem.Service.ICourseService;
-import com.lms.LearningManagementSystem.Service.INotificationService;
+import com.lms.LearningManagementSystem.Service.CourseService;
+import com.lms.LearningManagementSystem.Service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -19,16 +19,16 @@ public class UserService {
     protected final AtomicLong idGenerator = new AtomicLong(1); // Atomic for synchronization
     @Autowired
     @Qualifier("courseService")
-   protected static ICourseService courseService;
+   protected static CourseService courseService;
 
     @Autowired
     @Qualifier("notificationService")
-    protected static INotificationService notificationService;
+    protected static NotificationService notificationService;
 
     @Autowired
     protected static AssessmentService assessmentService;
 
-    public UserService(ICourseService courseService, INotificationService notificationService, AssessmentService assessmentService) {
+    public UserService(CourseService courseService, NotificationService notificationService, AssessmentService assessmentService) {
         this.courseService = courseService;
         this.notificationService = notificationService;
         this.assessmentService =assessmentService;

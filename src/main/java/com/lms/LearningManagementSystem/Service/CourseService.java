@@ -1,17 +1,18 @@
 package com.lms.LearningManagementSystem.Service;
+
 import com.lms.LearningManagementSystem.Model.User.Instructor;
+import com.lms.LearningManagementSystem.Model.Notification;
+import com.lms.LearningManagementSystem.Model.Course;
+import com.lms.LearningManagementSystem.Model.Lesson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import com.lms.LearningManagementSystem.Model.Course;
-import com.lms.LearningManagementSystem.Model.Lesson;
-import com.lms.LearningManagementSystem.Model.User.User;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Service
-public class CourseService implements ICourseService{
+public class CourseService {
     private final AtomicLong idGenerator = new AtomicLong(1);
     private final List<Course> courses = new ArrayList<>();
     private final NotificationService notificationService;
@@ -20,6 +21,7 @@ public class CourseService implements ICourseService{
     public CourseService(@Lazy NotificationService notificationService) {
         this.notificationService = notificationService;
     }
+
     private String generateId() {
         return String.valueOf(idGenerator.getAndIncrement());
     }
@@ -30,7 +32,8 @@ public class CourseService implements ICourseService{
         courses.add(course);
         return course;
     }
-    public  Course findCourseById(String courseId) {
+
+    public Course findCourseById(String courseId) {
         return courses.stream()
                 .filter(course -> course.getId().equals(courseId))
                 .findFirst()
@@ -45,24 +48,24 @@ public class CourseService implements ICourseService{
         }
         return false;
     }
+
     public Lesson addLesson(String courseId, String title, String content) {
         Course course = findCourseById(courseId);
         if (course != null) {
-            String lessonId =  generateId();
+            String lessonId = generateId();
             Lesson lesson = new Lesson(lessonId, title, content);
             course.getLessons().add(lesson);
             return lesson;
         }
         return null;
     }
-    // Enroll a student in a course
 
     public String generateOtp(String courseId, String lessonId) {
         Course course = findCourseById(courseId);
         if (course != null) {
             for (Lesson lesson : course.getLessons()) {
                 if (lesson.getId().equals(lessonId)) {
-                    String otp = UUID.randomUUID().toString().substring(0, 6); // Generate 6-character OTP
+                    String otp = UUID.randomUUID().toString().substring(0, 6);
                     lesson.setOtp(otp);
                     return otp;
                 }
@@ -71,7 +74,6 @@ public class CourseService implements ICourseService{
         return null;
     }
 
-    // Mark attendance for a student in a lesson
     public boolean markAttendance(String courseId, String lessonId, String studentId, boolean present) {
         Course course = findCourseById(courseId);
         if (course != null && course.getEnrolledStudents().contains(studentId)) {
@@ -84,7 +86,7 @@ public class CourseService implements ICourseService{
         }
         return false;
     }
-    // View attendance for a specific lesson
+
     public Map<String, Boolean> getLessonAttendance(String courseId, String lessonId) {
         Course course = findCourseById(courseId);
         if (course != null) {
@@ -96,12 +98,11 @@ public class CourseService implements ICourseService{
         }
         return null;
     }
-    // View all courses
+
     public List<Course> getAllCourses() {
         return courses;
     }
 
-    // View enrolled students
     public List<Long> getEnrolledStudents(String courseId) {
         Course course = findCourseById(courseId);
         return course != null ? course.getEnrolledStudents() : null;
@@ -110,12 +111,10 @@ public class CourseService implements ICourseService{
     public Course updateCourse(String courseId, String title, String description, int duration) {
         Course course = findCourseById(courseId);
         if (course != null) {
-            // Update course details
             course.setTitle(title);
             course.setDescription(description);
             course.setDuration(duration);
 
-            // Notify all enrolled students about the update
             for (Long studentId : course.getEnrolledStudents()) {
                 notificationService.notifyUser(studentId,
                         "The course " + course.getTitle() + " has been updated. Please check for new details.");
@@ -124,28 +123,23 @@ public class CourseService implements ICourseService{
         }
         return null;
     }
+
     public boolean deleteCourse(String courseId) {
         Course course = findCourseById(courseId);
         if (course != null) {
-            // Notify all enrolled students about course deletion
             for (Long studentId : course.getEnrolledStudents()) {
                 notificationService.notifyUser(studentId,
                         "The course " + course.getTitle() + " has been deleted.");
             }
 
-            // Notify the instructor if assigned
             if (course.getInstructor() != null) {
                 notificationService.notifyUser(course.getInstructor().getId(),
                         "The course " + course.getTitle() + " you were assigned to teach has been deleted.");
             }
 
-            // Remove the course from the list
             courses.remove(course);
-            return true; // Indicate successful deletion
+            return true;
         }
-        return false; // Course not found
+        return false;
     }
-
 }
-
-

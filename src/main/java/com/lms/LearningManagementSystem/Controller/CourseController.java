@@ -2,7 +2,9 @@ package com.lms.LearningManagementSystem.Controller;
 import com.lms.LearningManagementSystem.Model.Course;
 import com.lms.LearningManagementSystem.Model.Lesson;
 import com.lms.LearningManagementSystem.Service.CourseService;
+import com.lms.LearningManagementSystem.Service.UserService.AdminService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -16,6 +18,49 @@ public class CourseController {
 
     public CourseController(CourseService courseService) {
         this.courseService = courseService;
+    }
+
+    // Create a course
+    @PostMapping("/courses/create")
+    public ResponseEntity<Course> createCourse(
+            @RequestParam String title,
+            @RequestParam String description,
+            @RequestParam int duration) {
+        try {
+            Course course = AdminService.createCourse( title, description, duration);
+            return new ResponseEntity<>(course, HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // Update a course
+    @PutMapping("/courses/{courseId}/update")
+    public ResponseEntity<Course> updateCourse(
+            @PathVariable String courseId,
+            @RequestParam String title,
+            @RequestParam String description,
+            @RequestParam int duration) {
+        try {
+            Course updatedCourse = AdminService.updateCourse( courseId, title, description, duration);
+            return ResponseEntity.ok(updatedCourse);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+    // Delete a course
+    @DeleteMapping("/courses/{courseId}/delete")
+    public ResponseEntity<String> deleteCourse(@PathVariable String courseId) {
+        try {
+            boolean isDeleted = AdminService.deleteCourse(courseId);
+            if (isDeleted) {
+                return ResponseEntity.ok("Course deleted successfully.");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Course not found.");
+            }
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     // Add media to a course
