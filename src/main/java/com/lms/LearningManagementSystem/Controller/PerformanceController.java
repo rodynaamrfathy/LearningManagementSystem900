@@ -12,33 +12,67 @@ import java.util.*;
 @RequestMapping("/api/performance")
 public class PerformanceController {
 
-    @GetMapping("/track/{studentId}")
-    public ResponseEntity<List<Grading>> trackStudentPerformance(@PathVariable Long studentId) {
-        List<Grading> performance = InstructorService.trackStudentPerformance(studentId);
-        if (performance == null || performance.isEmpty()) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND); // Return 404 if no data found
+    @GetMapping("/{InstructorId}/track/{studentId}")
+        public ResponseEntity<?> trackStudentPerformance(@PathVariable Long InstructorId,@PathVariable Long studentId) {
+        try {
+            // Fetch student performance data
+            List<Grading> performance = InstructorService.trackStudentPerformance(InstructorId, studentId);
+
+            // Check if data is available
+            if (performance == null || performance.isEmpty()) {
+                return new ResponseEntity<>("No performance data found for the given student.", HttpStatus.NOT_FOUND);
+            }
+
+            // Return the performance data
+            return new ResponseEntity<>(performance, HttpStatus.OK);
+
+        } catch (IllegalArgumentException e) {
+            // Handle validation errors
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+
         }
-        return new ResponseEntity<>(performance, HttpStatus.OK); // Return 200 with the performance data
     }
 
 
-    @GetMapping("/assignments/{studentId}")
-    public ResponseEntity<List<Grading>> trackStudentAssignments(@PathVariable Long studentId) {
-        List<Grading> assignments = InstructorService.trackStudentAssignments(studentId);
-        if (assignments == null || assignments.isEmpty()) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND); // Return 404 if no assignments found
+    @GetMapping("/{InstructorId}/assignments/{studentId}")
+    public ResponseEntity<?> trackStudentAssignments(@PathVariable Long InstructorId,@PathVariable Long studentId) {
+        try {
+            // Fetch assignment grading data
+            List<Grading> assignments = InstructorService.trackStudentAssignments(InstructorId, studentId);
+
+            // Check if data is available
+            if (assignments == null || assignments.isEmpty()) {
+                return new ResponseEntity<>("No assignments found for the given student.", HttpStatus.NOT_FOUND);
+            }
+
+            // Return the assignment data
+            return new ResponseEntity<>(assignments, HttpStatus.OK);
+
+        } catch (IllegalArgumentException e) {
+            // Handle validation errors
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+
         }
-        return new ResponseEntity<>(assignments, HttpStatus.OK); // Return 200 with the assignments data
     }
 
 
-    @GetMapping("/quiz/{studentId}")
-    public ResponseEntity<List<Grading>> trackStudentQuizPerformance(@PathVariable Long studentId) {
-        List<Grading> quizPerformance = InstructorService.trackStudentQuizPerformance(studentId);
-        if (quizPerformance == null || quizPerformance.isEmpty()) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND); // Return 404 if no quiz performance found
+    @GetMapping("/{InstructorId}/quiz/{studentId}")
+    public ResponseEntity<?> trackStudentQuizPerformance(@PathVariable Long InstructorId,@PathVariable Long studentId) {
+        try {
+            // Fetch quiz performance data
+            List<Grading> quizPerformance = InstructorService.trackStudentQuizPerformance(InstructorId, studentId);
+
+            // Validate the response
+            if (quizPerformance == null || quizPerformance.isEmpty()) {
+                return new ResponseEntity<>("No quiz performance found for the given student.", HttpStatus.NOT_FOUND);
+            }
+            // Return the quiz performance data
+            return new ResponseEntity<>(quizPerformance, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            // Handle validation errors
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+
         }
-        return new ResponseEntity<>(quizPerformance, HttpStatus.OK); // Return 200 with the quiz performance data
     }
 
 }
