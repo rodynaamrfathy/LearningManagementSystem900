@@ -1,8 +1,10 @@
 package com.lms.LearningManagementSystem.Model;
 
-import java.util.ArrayList;
-import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 public class Notification {
     private String id;
     private String message;
@@ -14,19 +16,8 @@ public class Notification {
         this.read = false;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public boolean isRead() {
-        return read;
-    }
-
     public void markAsRead() {
         this.read = true;
     }
+
 }

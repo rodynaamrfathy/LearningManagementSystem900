@@ -1,14 +1,14 @@
 package com.lms.LearningManagementSystem.Model.User;
 
 import com.lms.LearningManagementSystem.Model.Notification;
-import lombok.Data;
-import org.springframework.stereotype.Component;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
-@Component
+@Setter
+@Getter
 public class User {
     private Long id;
     private String name;
@@ -16,6 +16,7 @@ public class User {
     private String password;
     private String role;
 
+    @Getter
     private List<Notification> notifications = new ArrayList<>();
 
     // Common methods for all users
@@ -34,10 +35,6 @@ public class User {
             return true;
         }
         return false;
-    }
-
-    public List<Notification> getNotifications() {
-        return notifications;
     }
 
     public void addNotification(Notification notification) {
