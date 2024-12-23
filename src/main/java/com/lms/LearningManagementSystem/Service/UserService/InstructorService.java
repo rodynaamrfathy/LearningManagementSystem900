@@ -25,7 +25,7 @@ public class InstructorService extends UserService {
     public static boolean assignInstructorToCourse(Long instructorId, String courseId) {
         User user = userStore.get(instructorId);
         if (user == null || !(user instanceof Instructor)) {
-            return false; // User is either not found or not an instructor
+            throw new IllegalArgumentException("User is not an instructor and cannot assign courses.");
         }
 
         Course course = courseService.findCourseById(courseId);
@@ -52,21 +52,14 @@ public class InstructorService extends UserService {
 
     public static String generateOtpForLesson(Long instructorId, String courseId, String lessonId) {
         User user = userStore.get(instructorId);
-        if (user instanceof Instructor) {
+        if (user == null || !(user instanceof Instructor)) {
+            throw new IllegalArgumentException("User is not an instructor .");
+        }
             return courseService.generateOtp(courseId, lessonId);
-        }
-        return null; // Only instructors can generate OTPs
-    }
-
-    public static boolean markAttendance(Long studentId, String courseId, String lessonId, String otp) {
-        User user = userStore.get(studentId);
-        if (user instanceof Student) {
-            return courseService.markAttendance(courseId, lessonId, String.valueOf(studentId), true);
-        }
-        return false;
     }
 
     public static Quiz createQuiz(String title, int num, int totalMarks) {
+
         return assessmentService.createQuiz(title, num, totalMarks);
     }
 
