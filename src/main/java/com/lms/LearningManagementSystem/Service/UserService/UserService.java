@@ -44,6 +44,15 @@ public class UserService {
         return userStore.get(id);
     }
 
+    public User authenticate(String email, String password) {
+        for (User user : userStore.values()) {
+            if (user.getEmail().equalsIgnoreCase(email) && user.getPassword().equals(password)) {
+                return user; // User authenticated
+            }
+        }
+        return null; // Invalid credentials
+    }
+
     // Add a new user
     public User addUser(User user) {
         // Validate and set role

@@ -1,5 +1,6 @@
 package com.lms.LearningManagementSystem.Controller;
 
+import com.lms.LearningManagementSystem.Model.User.LoginRequest;
 import com.lms.LearningManagementSystem.Model.User.User;
 import com.lms.LearningManagementSystem.Service.UserService.UserService;
 import com.lms.LearningManagementSystem.Service.UserService.StudentService;
@@ -18,6 +19,16 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @PostMapping("/login")
+    public ResponseEntity<String> loginUser(@RequestBody LoginRequest loginRequest) {
+        User authenticatedUser = userService.authenticate(loginRequest.getEmail(), loginRequest.getPassword());
+        if (authenticatedUser != null) {
+            return new ResponseEntity<>("Login successful for user: " + authenticatedUser.getName(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Invalid email or password", HttpStatus.UNAUTHORIZED);
+        }
+    }
 
     @PostMapping("/register")
     public ResponseEntity<User> registerUser(@RequestBody User user) {
