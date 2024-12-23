@@ -4,6 +4,7 @@ import com.lms.LearningManagementSystem.Model.Assessment.Assignment;
 import com.lms.LearningManagementSystem.Model.Assessment.Quiz;
 import com.lms.LearningManagementSystem.Model.Course;
 import com.lms.LearningManagementSystem.Model.User.Admin;
+import com.lms.LearningManagementSystem.Model.User.Instructor;
 import com.lms.LearningManagementSystem.Model.User.Student;
 import com.lms.LearningManagementSystem.Model.User.User;
 import com.lms.LearningManagementSystem.Service.AssessmentService;
@@ -49,11 +50,19 @@ public class StudentService extends UserService {
         return courseService.markAttendance(courseId, lessonId, String.valueOf(studentId), true);
     }
 
-    public static void SubmitQuiz(Long quizId, Map<String, String> answers) {
+    public static void SubmitQuiz(Long studentId,Long quizId, Map<String, String> answers) {
+        User user = userStore.get(studentId);
+        if (user == null || !(user instanceof Student)) {
+            throw new IllegalArgumentException("User is not a Student  .");
+        }
         assessmentService.SubmitQuiz(quizId, answers);
     }
 
     public static void submitAssignment(Long assignmentId, String fileName, Long studID) {
+        User user = userStore.get(studID);
+        if (user == null || !(user instanceof Student)) {
+            throw new IllegalArgumentException("User is not a Student  .");
+        }
         assessmentService.submitAssignment(assignmentId, fileName, studID);
     }
 
@@ -65,7 +74,6 @@ public class StudentService extends UserService {
     public static List<Assignment> GetAllAssignments() {
         return assessmentService.GetAllAssignments();
     }
-
 
     // Get Quiz by ID
     public static Quiz findQuizById(Long id) {
