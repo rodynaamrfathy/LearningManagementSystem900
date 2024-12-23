@@ -1,5 +1,4 @@
 package com.lms.LearningManagementSystem.Controller;
-
 import com.lms.LearningManagementSystem.Model.Course;
 import com.lms.LearningManagementSystem.Model.Lesson;
 import com.lms.LearningManagementSystem.Service.CourseService;
@@ -22,46 +21,48 @@ public class CourseController {
     }
 
     // Create a course
-    @PostMapping("/create")
-    public ResponseEntity<Course> createCourse(
+    @PostMapping("/{AdminId}/create")
+    public ResponseEntity<?> createCourse(
+            @PathVariable Long AdminId,
             @RequestParam String title,
             @RequestParam String description,
-            @RequestParam int duration) {
+            @RequestParam int duration)
+    {
         try {
-            Course course = AdminService.createCourse(title, description, duration);
+            Course course = AdminService.createCourse(AdminId,title, description, duration);
             return new ResponseEntity<>(course, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Operation failed: You are not an admin.", HttpStatus.BAD_REQUEST);
         }
     }
 
     // Update a course
-    @PutMapping("/{courseId}/update")
-    public ResponseEntity<Course> updateCourse(
+    @PutMapping("/{AdminId}/{courseId}/update")
+    public ResponseEntity<?> updateCourse(
+            @PathVariable Long AdminId,
             @PathVariable String courseId,
             @RequestParam String title,
             @RequestParam String description,
             @RequestParam int duration) {
         try {
-            Course updatedCourse = AdminService.updateCourse(courseId, title, description, duration);
+            Course updatedCourse = AdminService.updateCourse(AdminId ,courseId, title, description, duration);
             return ResponseEntity.ok(updatedCourse);
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Operation failed: You are not an admin.", HttpStatus.BAD_REQUEST);
         }
     }
-
     // Delete a course
-    @DeleteMapping("/{courseId}/delete")
-    public ResponseEntity<String> deleteCourse(@PathVariable String courseId) {
+    @DeleteMapping("/{AdminId}/{courseId}/delete")
+    public ResponseEntity<String> deleteCourse(@PathVariable String courseId,@PathVariable Long AdminId) {
         try {
-            boolean isDeleted = AdminService.deleteCourse(courseId);
+            boolean isDeleted = AdminService.deleteCourse(AdminId,courseId);
             if (isDeleted) {
                 return ResponseEntity.ok("Course deleted successfully.");
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Course not found.");
             }
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Operation failed: You are not an admin.", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -104,7 +105,6 @@ public class CourseController {
     public List<Long> getEnrolledStudents(@PathVariable String courseId) {
         return courseService.getEnrolledStudents(courseId);
     }
-
     @GetMapping("/{courseId}")
     public Course getCourseById(@PathVariable String courseId) {
         Course course = courseService.findCourseById(courseId);
