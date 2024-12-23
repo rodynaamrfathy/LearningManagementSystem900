@@ -1,11 +1,11 @@
 package com.lms.LearningManagementSystem.Controller;
+
 import com.lms.LearningManagementSystem.Model.Assessment.*;
-import com.lms.LearningManagementSystem.Service.AssessmentService;
 import com.lms.LearningManagementSystem.Service.UserService.InstructorService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.*;
 
 @RestController
@@ -30,7 +30,6 @@ public class PerformanceController {
         }
         return new ResponseEntity<>(assignments, HttpStatus.OK); // Return 200 with the assignments data
     }
-
 
 
     @GetMapping("/quiz/{studentId}")

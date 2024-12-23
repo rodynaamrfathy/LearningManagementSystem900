@@ -1,4 +1,5 @@
 package com.lms.LearningManagementSystem.Controller;
+
 import com.lms.LearningManagementSystem.Model.Course;
 import com.lms.LearningManagementSystem.Model.Lesson;
 import com.lms.LearningManagementSystem.Service.CourseService;
@@ -27,7 +28,7 @@ public class CourseController {
             @RequestParam String description,
             @RequestParam int duration) {
         try {
-            Course course = AdminService.createCourse( title, description, duration);
+            Course course = AdminService.createCourse(title, description, duration);
             return new ResponseEntity<>(course, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -42,12 +43,13 @@ public class CourseController {
             @RequestParam String description,
             @RequestParam int duration) {
         try {
-            Course updatedCourse = AdminService.updateCourse( courseId, title, description, duration);
+            Course updatedCourse = AdminService.updateCourse(courseId, title, description, duration);
             return ResponseEntity.ok(updatedCourse);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+
     // Delete a course
     @DeleteMapping("/{courseId}/delete")
     public ResponseEntity<String> deleteCourse(@PathVariable String courseId) {
@@ -102,6 +104,7 @@ public class CourseController {
     public List<Long> getEnrolledStudents(@PathVariable String courseId) {
         return courseService.getEnrolledStudents(courseId);
     }
+
     @GetMapping("/{courseId}")
     public Course getCourseById(@PathVariable String courseId) {
         Course course = courseService.findCourseById(courseId);

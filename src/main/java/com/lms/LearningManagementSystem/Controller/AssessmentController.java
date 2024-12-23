@@ -1,11 +1,8 @@
 package com.lms.LearningManagementSystem.Controller;
 import java.util.List;
 import com.lms.LearningManagementSystem.Model.Assessment.*;
-import com.lms.LearningManagementSystem.Service.AssessmentService;
 import com.lms.LearningManagementSystem.Service.UserService.InstructorService;
 import com.lms.LearningManagementSystem.Service.UserService.StudentService;
-import com.lms.LearningManagementSystem.Service.UserService.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
