@@ -101,30 +101,41 @@ class InstructorServiceTest {
 
     @Test
     void testCreateQuiz() {
+        Long instructorId = 1L;
         String title = "Quiz1";
         int num = 10;
         int totalMarks = 100;
+        Instructor instructor = mock(Instructor.class);
         Quiz quiz = mock(Quiz.class);
 
-        when(assessmentService.createQuiz(title, num, totalMarks)).thenReturn(quiz);
+        // Mock the method from UserService
+        UserService.userStore.put(instructorId, instructor);
+        // Mock static method from InstructorService
+        when(InstructorService.createQuiz(instructorId, title, num, totalMarks)).thenReturn(quiz);
 
-        Quiz createdQuiz = InstructorService.createQuiz(title, num, totalMarks);
+        // Calling the static method
+        Quiz createdQuiz = InstructorService.createQuiz(instructorId, title, num, totalMarks);
 
         assertNotNull(createdQuiz);
     }
 
     @Test
     void testTrackStudentPerformance() {
+        Long instructorId = 1L;
         Long studentId = 1L;
         List<Grading> gradings = Collections.emptyList();
 
+        Instructor instructor = mock(Instructor.class);
         // Simulate tracking student performance
-        when(assessmentService.trackStudentPerformance(studentId)).thenReturn(gradings);
+        UserService.userStore.put(instructorId, instructor);
+        when(InstructorService.trackStudentPerformance(instructorId,studentId)).thenReturn(gradings);
 
         // Call the method to test
-        List<Grading> result = InstructorService.trackStudentPerformance(studentId);
+        List<Grading> result = InstructorService.trackStudentPerformance(instructorId,studentId);
 
         // Validate the outcome
         assertEquals(gradings, result);
     }
+
+    
 }
