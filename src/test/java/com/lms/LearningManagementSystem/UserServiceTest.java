@@ -69,7 +69,7 @@ class UserServiceTest {
 		assertNotNull(addedUser, "User should be added successfully");
 		assertEquals("Instructor User", addedUser.getName(), "User name should match");
 		assertEquals("instructor@example.com", addedUser.getEmail(), "User email should match");
-		assertEquals("instructor", addedUser.getRole(), "User role should match");
+		assertEquals("Instructor", addedUser.getRole(), "User role should match");
 	}
 
 	@Test
