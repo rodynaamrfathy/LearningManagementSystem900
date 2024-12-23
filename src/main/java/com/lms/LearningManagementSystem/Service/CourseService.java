@@ -1,13 +1,19 @@
 package com.lms.LearningManagementSystem.Service;
 
+import com.lms.LearningManagementSystem.Model.User.Admin;
+import com.lms.LearningManagementSystem.Model.User.Instructor;
+import com.lms.LearningManagementSystem.Model.Notification;
 import com.lms.LearningManagementSystem.Model.Course;
 import com.lms.LearningManagementSystem.Model.Lesson;
+import com.lms.LearningManagementSystem.Model.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
+
+import static com.lms.LearningManagementSystem.Service.UserService.UserService.userStore;
 
 @Service
 public class CourseService {
@@ -24,9 +30,14 @@ public class CourseService {
         return String.valueOf(idGenerator.getAndIncrement());
     }
 
-    public Course createCourse(String title, String description, int duration) {
+    public Course createCourse(Long AdminId,String title, String description, int duration) {
+        // Check if the user exists and is an admin
+        User user = userStore.get(AdminId);
+        if (user == null || !(user instanceof Admin)) {
+            throw new IllegalArgumentException("Only admins can create courses.");
+        }
         String courseId = generateId();
-        Course course = new Course(courseId, title, description, duration);
+        Course course = new Course(AdminId,courseId, title, description, duration);
         courses.add(course);
         return course;
     }
@@ -106,7 +117,12 @@ public class CourseService {
         return course != null ? course.getEnrolledStudents() : null;
     }
 
-    public Course updateCourse(String courseId, String title, String description, int duration) {
+    public Course updateCourse(Long AdminId,String courseId, String title, String description, int duration) {
+        // Check if the user exists and is an admin
+        User user = userStore.get(AdminId);
+        if (user == null || !(user instanceof Admin)) {
+            throw new IllegalArgumentException("Only admins can create courses.");
+        }
         Course course = findCourseById(courseId);
         if (course != null) {
             course.setTitle(title);
@@ -122,7 +138,12 @@ public class CourseService {
         return null;
     }
 
-    public boolean deleteCourse(String courseId) {
+    public boolean deleteCourse(Long AdminId,String courseId) {
+        // Check if the user exists and is an admin
+        User user = userStore.get(AdminId);
+        if (user == null || !(user instanceof Admin)) {
+            throw new IllegalArgumentException("Only admins can create courses.");
+        }
         Course course = findCourseById(courseId);
         if (course != null) {
             for (Long studentId : course.getEnrolledStudents()) {
@@ -140,4 +161,5 @@ public class CourseService {
         }
         return false;
     }
+
 }
