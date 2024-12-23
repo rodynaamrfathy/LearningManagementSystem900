@@ -58,8 +58,11 @@ public class InstructorService extends UserService {
             return courseService.generateOtp(courseId, lessonId);
     }
 
-    public static Quiz createQuiz(String title, int num, int totalMarks) {
-
+    public static Quiz createQuiz(Long instructorId,String title, int num, int totalMarks) {
+        User user = userStore.get(instructorId);
+        if (user == null || !(user instanceof Instructor)) {
+            throw new IllegalArgumentException("User is not an instructor .");
+        }
         return assessmentService.createQuiz(title, num, totalMarks);
     }
 
@@ -67,31 +70,59 @@ public class InstructorService extends UserService {
         return assessmentService.correctAnswersCount(quizId, studentId);
     }
 
-    public static void addQuestions(List<Question> questions) {
+    public static void addQuestions(Long instructorId,List<Question> questions) {
+        User user = userStore.get(instructorId);
+        if (user == null || !(user instanceof Instructor)) {
+            throw new IllegalArgumentException("User is not an instructor .");
+        }
         assessmentService.addQuestions(questions); }
 
-     public static List<Question> GetQuestions() {
+     public static List<Question> GetQuestions(Long instructorId) {
+         User user = userStore.get(instructorId);
+         if (user == null || !(user instanceof Instructor)) {
+             throw new IllegalArgumentException("User is not an instructor .");
+         }
 
         return assessmentService.GetQuestions();
     }
 
-    public static Assignment createAssignment(String title, String description) {
+    public static Assignment createAssignment(Long instructorId,String title, String description) {
+        User user = userStore.get(instructorId);
+        if (user == null || !(user instanceof Instructor)) {
+            throw new IllegalArgumentException("User is not an instructor .");
+        }
         return assessmentService.createAssignment(title, description);
     }
-    public static void gradeAssignment(Long studentId, String type, String marks, String feedback) {
+    public static void gradeAssignment(Long instructorId,Long studentId, String type, String marks, String feedback) {
+        User user = userStore.get(instructorId);
+        if (user == null || !(user instanceof Instructor)) {
+            throw new IllegalArgumentException("User is not an instructor .");
+        }
         assessmentService.gradeAssignment(studentId, type, marks, feedback);
     }
 
     // Get Gradings
-    public static List<Grading> trackStudentPerformance(Long studentId) {
+    public static List<Grading> trackStudentPerformance(Long instructorId,Long studentId) {
+        User user = userStore.get(instructorId);
+        if (user == null || !(user instanceof Instructor)) {
+            throw new IllegalArgumentException("User is not an instructor .");
+        }
         return assessmentService.trackStudentPerformance(studentId);
     }
 
-    public static List<Grading> trackStudentAssignments(Long studentId) {
+    public static List<Grading> trackStudentAssignments(Long instructorId,Long studentId) {
+        User user = userStore.get(instructorId);
+        if (user == null || !(user instanceof Instructor)) {
+            throw new IllegalArgumentException("User is not an instructor .");
+        }
         return assessmentService.trackStudentAssignments(studentId);
     }
 
-    public static List<Grading> trackStudentQuizPerformance(Long studentId) {
+    public static List<Grading> trackStudentQuizPerformance(Long instructorId,Long studentId) {
+        User user = userStore.get(instructorId);
+        if (user == null || !(user instanceof Instructor)) {
+            throw new IllegalArgumentException("User is not an instructor .");
+        }
         return assessmentService.trackStudentQuizPerformance(studentId);
     }
 
