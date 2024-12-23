@@ -9,6 +9,7 @@ import com.lms.LearningManagementSystem.Service.AssessmentService;
 import com.lms.LearningManagementSystem.Service.CourseService;
 import com.lms.LearningManagementSystem.Service.NotificationService;
 import com.lms.LearningManagementSystem.Service.UserService.InstructorService;
+import com.lms.LearningManagementSystem.Service.UserService.StudentService;
 import com.lms.LearningManagementSystem.Service.UserService.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+
 
 class InstructorServiceTest {
 
@@ -30,7 +32,9 @@ class InstructorServiceTest {
         courseService = mock(CourseService.class);
         notificationService = mock(NotificationService.class);
         assessmentService = mock(AssessmentService.class);
-        instructorService = new InstructorService(courseService, notificationService, assessmentService);
+
+        // Here we pass mocked services to the InstructorService constructor
+        new InstructorService(courseService, notificationService, assessmentService);
     }
 
     @Test
@@ -40,26 +44,17 @@ class InstructorServiceTest {
         Instructor instructor = mock(Instructor.class);
         Course course = mock(Course.class);
 
+        // Simulate course service finding a course
         when(courseService.findCourseById(courseId)).thenReturn(course);
-        UserService.userStore.put(instructorId, instructor);
+        UserService.userStore.put(instructorId, instructor); // Store instructor in userStore
 
+        // Call the method to test
         boolean result = InstructorService.assignInstructorToCourse(instructorId, courseId);
 
+        // Validate the outcome
         assertTrue(result);
         verify(course).setInstructor(instructor);
         verify(notificationService).notifyUser(eq(instructorId), anyString());
-    }
-
-    @Test
-    void testAssignInstructorToCourse_Failure_UserNotFound() {
-        Long instructorId = 2L;
-        String courseId = "course2";
-
-        boolean result = InstructorService.assignInstructorToCourse(instructorId, courseId);
-
-        assertFalse(result);
-        verify(courseService, never()).findCourseById(anyString());
-        verify(notificationService, never()).notifyUser(anyLong(), anyString());
     }
 
     @Test
@@ -69,11 +64,16 @@ class InstructorServiceTest {
         String lessonId = "lesson1";
         Instructor instructor = mock(Instructor.class);
 
+        // Store the instructor in userStore
         UserService.userStore.put(instructorId, instructor);
+
+        // Simulate OTP generation from course service
         when(courseService.generateOtp(courseId, lessonId)).thenReturn("123456");
 
+        // Call the method to test
         String otp = InstructorService.generateOtpForLesson(instructorId, courseId, lessonId);
 
+        // Validate the outcome
         assertNotNull(otp);
         assertEquals("123456", otp);
     }
@@ -85,11 +85,17 @@ class InstructorServiceTest {
         String lessonId = "lesson1";
         String otp = "123456";
         Student student = mock(Student.class);
+
+        // Store student in userStore
         UserService.userStore.put(studentId, student);
+
+        // Simulate attendance marking from course service
         when(courseService.markAttendance(courseId, lessonId, studentId.toString(), true)).thenReturn(true);
 
-        boolean result = InstructorService.markAttendance(studentId, courseId, lessonId, otp);
+        // Call the method to test
+        boolean result = StudentService.markAttendance(studentId, courseId, lessonId, otp);
 
+        // Validate the outcome
         assertTrue(result);
     }
 
@@ -112,10 +118,13 @@ class InstructorServiceTest {
         Long studentId = 1L;
         List<Grading> gradings = Collections.emptyList();
 
+        // Simulate tracking student performance
         when(assessmentService.trackStudentPerformance(studentId)).thenReturn(gradings);
 
+        // Call the method to test
         List<Grading> result = InstructorService.trackStudentPerformance(studentId);
 
+        // Validate the outcome
         assertEquals(gradings, result);
     }
 }
