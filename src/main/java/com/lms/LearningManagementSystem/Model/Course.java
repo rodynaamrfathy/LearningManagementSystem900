@@ -1,10 +1,12 @@
 package com.lms.LearningManagementSystem.Model;
+
 import com.lms.LearningManagementSystem.Model.User.Instructor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 public class Course {
     private String id;
     private String title;
@@ -24,6 +26,7 @@ public class Course {
         this.lessons = new ArrayList<>();
         this.enrolledStudents = new ArrayList<>();
     }
+
     public String getId() {
         return id;
     }
@@ -55,20 +58,21 @@ public class Course {
     public Instructor getInstructor() {
         return instructor;
     }
+
     public void setInstructor(Instructor instructor) {
         this.instructor = instructor;
     }
 
     public void setDuration(int duration) {
-        this.duration=duration;
+        this.duration = duration;
     }
 
     public void setDescription(String description) {
-        this.description=description;
+        this.description = description;
     }
 
     public void setTitle(String title) {
-        this.title=title;
+        this.title = title;
     }
 
 

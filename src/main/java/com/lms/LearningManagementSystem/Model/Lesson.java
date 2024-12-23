@@ -2,12 +2,14 @@ package com.lms.LearningManagementSystem.Model;
 
 import java.util.HashMap;
 import java.util.Map;
+
 public class Lesson {
     private String id;
     private String title;
     private String content;
     private String otp;
     private Map<String, Boolean> attendance; // Tracks student attendance
+
     public Lesson(String id, String title, String content) {
         this.id = id;
         this.title = title;
@@ -30,6 +32,7 @@ public class Lesson {
     public String getOtp() {
         return otp;
     }
+
     public void setOtp(String otp) {
         this.otp = otp;
     }
