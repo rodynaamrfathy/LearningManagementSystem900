@@ -3,6 +3,8 @@ package com.lms.LearningManagementSystem.Service.UserService;
 import com.lms.LearningManagementSystem.Model.Assessment.Assignment;
 import com.lms.LearningManagementSystem.Model.Assessment.Quiz;
 import com.lms.LearningManagementSystem.Model.Course;
+import com.lms.LearningManagementSystem.Model.User.Admin;
+import com.lms.LearningManagementSystem.Model.User.Student;
 import com.lms.LearningManagementSystem.Model.User.User;
 import com.lms.LearningManagementSystem.Service.AssessmentService;
 import com.lms.LearningManagementSystem.Service.CourseService;
@@ -18,17 +20,17 @@ public class StudentService extends UserService {
         super(courseService, notificationService, assessmentService);
     }
 
-    public static boolean enrollInCourse(Long userId, String courseId) {
-        User user = userStore.get(userId);
-        if (user == null) {
-            return false; // User doesn't exist
+    public static boolean enrollInCourse(Long StudentId, String courseId) {
+        User user = userStore.get(StudentId);
+        if (user == null || !(user instanceof Student)) {
+            throw new IllegalArgumentException("Only Student can create courses.");
         }
         Course course = courseService.findCourseById(courseId);
-        if (course != null && !course.getEnrolledStudents().contains(userId)) {
+        if (course != null && !course.getEnrolledStudents().contains(StudentId)) {
             // Add student to course
-            course.getEnrolledStudents().add(Long.parseLong(String.valueOf(userId)));
+            course.getEnrolledStudents().add(Long.parseLong(String.valueOf(StudentId)));
             // Notify student
-            notificationService.notifyUser(userId,
+            notificationService.notifyUser(StudentId,
                     "You have been enrolled in the course: " + course.getTitle());
             // Notify instructor
             if (course.getInstructor() != null) {
@@ -38,6 +40,13 @@ public class StudentService extends UserService {
             return true;
         }
         return false;
+    }
+    public static boolean markAttendance(Long studentId, String courseId, String lessonId, String otp) {
+        User user = userStore.get(studentId);
+        if (user == null || !(user instanceof Student)) {
+            throw new IllegalArgumentException("Only Student can markAttendance.");
+        }
+        return courseService.markAttendance(courseId, lessonId, String.valueOf(studentId), true);
     }
 
     public static void SubmitQuiz(Long quizId, Map<String, String> answers) {
