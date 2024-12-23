@@ -79,15 +79,6 @@ public class CourseController {
         return courseService.addLesson(courseId, title, content);
     }
 
-
-    // Mark attendance for a lesson
-//    @PostMapping("/{courseId}/lessons/{lessonId}/attendance")
-//    public String markAttendance(@PathVariable String courseId, @PathVariable String lessonId,
-//                                 @RequestParam String studentId, @RequestParam boolean present) {
-//        boolean success = courseService.markAttendance(courseId, lessonId, studentId, present);
-//        return success ? "Attendance marked successfully." : "Failed to mark attendance.";
-//    }
-
     // View attendance for a lesson
     @GetMapping("/{courseId}/lessons/{lessonId}/attendance")
     public Map<String, Boolean> getLessonAttendance(@PathVariable String courseId, @PathVariable String lessonId) {
