@@ -76,7 +76,7 @@ public class CourseService {
 
     public boolean markAttendance(String courseId, String lessonId, String studentId, boolean present) {
         Course course = findCourseById(courseId);
-        if (course != null && course.getEnrolledStudents().contains(studentId)) {
+        if (course != null && course.getEnrolledStudents().contains(Long.valueOf(studentId))) {
             for (Lesson lesson : course.getLessons()) {
                 if (lesson.getId().equals(lessonId)) {
                     lesson.markAttendance(studentId, present);

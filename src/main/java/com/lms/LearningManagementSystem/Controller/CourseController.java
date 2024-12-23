@@ -21,7 +21,7 @@ public class CourseController {
     }
 
     // Create a course
-    @PostMapping("/courses/create")
+    @PostMapping("/create")
     public ResponseEntity<Course> createCourse(
             @RequestParam String title,
             @RequestParam String description,
@@ -35,7 +35,7 @@ public class CourseController {
     }
 
     // Update a course
-    @PutMapping("/courses/{courseId}/update")
+    @PutMapping("/{courseId}/update")
     public ResponseEntity<Course> updateCourse(
             @PathVariable String courseId,
             @RequestParam String title,
@@ -49,7 +49,7 @@ public class CourseController {
         }
     }
     // Delete a course
-    @DeleteMapping("/courses/{courseId}/delete")
+    @DeleteMapping("/{courseId}/delete")
     public ResponseEntity<String> deleteCourse(@PathVariable String courseId) {
         try {
             boolean isDeleted = AdminService.deleteCourse(courseId);
@@ -78,12 +78,12 @@ public class CourseController {
 
 
     // Mark attendance for a lesson
-    @PostMapping("/{courseId}/lessons/{lessonId}/attendance")
-    public String markAttendance(@PathVariable String courseId, @PathVariable String lessonId,
-                                 @RequestParam String studentId, @RequestParam boolean present) {
-        boolean success = courseService.markAttendance(courseId, lessonId, studentId, present);
-        return success ? "Attendance marked successfully." : "Failed to mark attendance.";
-    }
+//    @PostMapping("/{courseId}/lessons/{lessonId}/attendance")
+//    public String markAttendance(@PathVariable String courseId, @PathVariable String lessonId,
+//                                 @RequestParam String studentId, @RequestParam boolean present) {
+//        boolean success = courseService.markAttendance(courseId, lessonId, studentId, present);
+//        return success ? "Attendance marked successfully." : "Failed to mark attendance.";
+//    }
 
     // View attendance for a lesson
     @GetMapping("/{courseId}/lessons/{lessonId}/attendance")
