@@ -13,18 +13,18 @@ public class AdminService extends UserService {
         super(courseService, notificationService, assessmentService);
     }
 
-    public static Course createCourse(String title, String description, int duration) {
-        return courseService.createCourse(title, description, duration);
+    public static Course createCourse(Long AdminId,String title, String description, int duration) {
+        return courseService.createCourse(AdminId,title, description, duration);
     }
 
-    public static Course updateCourse(String courseId, String title, String description, int duration) {
+    public static Course updateCourse(Long AdminId,String courseId, String title, String description, int duration) {
         Course course = courseService.findCourseById(courseId);
-        return courseService.updateCourse(courseId, title, description, duration);
+        return courseService.updateCourse( AdminId,courseId, title, description, duration);
     }
 
-    public static boolean deleteCourse(String courseId) {
+    public static boolean deleteCourse(Long AdminId,String courseId) {
         Course course = courseService.findCourseById(courseId);
-        return courseService.deleteCourse(courseId);
+        return courseService.deleteCourse(AdminId,courseId);
     }
 
 }
