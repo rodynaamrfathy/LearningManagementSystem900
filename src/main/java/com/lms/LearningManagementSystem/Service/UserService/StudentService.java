@@ -1,7 +1,6 @@
 package com.lms.LearningManagementSystem.Service.UserService;
 
 import com.lms.LearningManagementSystem.Model.Assessment.Assignment;
-import com.lms.LearningManagementSystem.Model.Assessment.Question;
 import com.lms.LearningManagementSystem.Model.Assessment.Quiz;
 import com.lms.LearningManagementSystem.Model.Course;
 import com.lms.LearningManagementSystem.Model.User.User;
@@ -58,12 +57,11 @@ public class StudentService extends UserService {
         return assessmentService.GetAllAssignments();
     }
 
-   
 
     // Get Quiz by ID
-      public static Quiz findQuizById(Long id) {
-         return assessmentService.findQuizById(id);
-     }
+    public static Quiz findQuizById(Long id) {
+        return assessmentService.findQuizById(id);
+    }
 
     public static List<Quiz> GetAllquizzes() {
         return assessmentService.GetAllquizzes();

@@ -1,6 +1,7 @@
 package com.lms.LearningManagementSystem.Service;
 
 import com.lms.LearningManagementSystem.Model.Assessment.*;
+
 import java.util.*;
 
 import org.springframework.stereotype.Service;
@@ -68,14 +69,14 @@ public class AssessmentService {
             }
         }
         String feedback;
-        if(count == submission.size()) {
+        if (count == submission.size()) {
             feedback = "Good Job!";
         } else if (count >= submission.size() * 0.75) { // At least 75% correct
             feedback = "Well Done! Keep Improving!";
         } else {
             feedback = "You Need More Hard Work!";
         }
-        String mark = count+" / "+submission.size();
+        String mark = count + " / " + submission.size();
         gradings.add(new Grading(quizId, studentId, "quiz", mark, feedback));
         return count;
     }
