@@ -124,7 +124,7 @@ public class UserController {
         }
     }
 
-    // BUG
+    // BUG "fixed"
     // Student enters OTP to mark attendance
     @PostMapping("/mark-attendance/{studentId}/{courseId}/{lessonId}")
     public ResponseEntity<String> markAttendance(@PathVariable Long studentId, @PathVariable String courseId, @PathVariable String lessonId,
