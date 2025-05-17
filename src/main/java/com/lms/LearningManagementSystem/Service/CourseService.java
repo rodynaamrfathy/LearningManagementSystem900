@@ -98,14 +98,17 @@ public class CourseService {
 
     public Map<String, Boolean> getLessonAttendance(String courseId, String lessonId) {
         Course course = findCourseById(courseId);
-        if (course != null) {
-            for (Lesson lesson : course.getLessons()) {
-                if (lesson.getId().equals(lessonId)) {
-                    return lesson.getAttendance();
-                }
+        if (course == null) {
+            throw new IllegalArgumentException("Course with ID " + courseId + " not found.");
+        }
+
+        for (Lesson lesson : course.getLessons()) {
+            if (lesson.getId().equals(lessonId)) {
+                return lesson.getAttendance();
             }
         }
-        return null;
+
+        throw new IllegalArgumentException("Lesson with ID " + lessonId + " not found in course " + courseId + ".");
     }
 
     public List<Course> getAllCourses() {

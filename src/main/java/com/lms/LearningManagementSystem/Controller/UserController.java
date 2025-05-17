@@ -20,6 +20,7 @@ public class UserController {
     @Autowired
     private UserService userService; // Use the interface instead of the implementation
 
+    // TESTED
     @PostMapping("/login")
     public ResponseEntity<String> loginUser(@RequestBody LoginRequest loginRequest) {
         User authenticatedUser = userService.authenticate(loginRequest.getEmail(), loginRequest.getPassword());
@@ -30,6 +31,8 @@ public class UserController {
         }
     }
 
+    // BUG
+    // does not check if the email already exists
     @PostMapping("/register")
     public ResponseEntity<User> registerUser(@RequestBody User user) {
         try {
@@ -40,27 +43,32 @@ public class UserController {
         }
     }
 
+    // TESTED
     @GetMapping
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
 
+    // TESTED
     @GetMapping("/{id}")
     public User getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
 
+    // Tested
     @PutMapping("/{id}")
     public User updateUser(@RequestBody User updateUser, @PathVariable Long id) {
         return userService.updateUser(updateUser, id);
     }
 
+    // Tested
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Long id) {
 
         userService.deleteUser(id);
     }
 
+    // Tested
     @GetMapping("/list")
     public ResponseEntity<List<User>> listUsers(
             @RequestParam(required = false) String role) {
@@ -74,6 +82,7 @@ public class UserController {
 
     }
 
+    // Tested
     @PostMapping("/{userId}/enroll")
     public ResponseEntity<?> enrollInCourse(
             @PathVariable Long userId,
@@ -86,6 +95,7 @@ public class UserController {
         }
     }
 
+    // Tested
     // Assign instructor to a course
     @PostMapping("/{instructorId}/assign/{courseId}")
     public ResponseEntity<String> assignInstructorToCourse(
@@ -99,6 +109,7 @@ public class UserController {
         }
     }
 
+    // Tested
     // Instructor generates OTP for a lesson
     @PostMapping("/generate-otp/{instructorId}/{courseId}/{lessonId}")
     public ResponseEntity<String> generateOtpForLesson(
@@ -113,6 +124,7 @@ public class UserController {
         }
     }
 
+    // BUG
     // Student enters OTP to mark attendance
     @PostMapping("/mark-attendance/{studentId}/{courseId}/{lessonId}")
     public ResponseEntity<String> markAttendance(@PathVariable Long studentId, @PathVariable String courseId, @PathVariable String lessonId,

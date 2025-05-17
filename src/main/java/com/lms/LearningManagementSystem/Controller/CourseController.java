@@ -20,6 +20,7 @@ public class CourseController {
         this.courseService = courseService;
     }
 
+    // Tested
     // Create a course
     @PostMapping("/{AdminId}/create")
     public ResponseEntity<?> createCourse(
@@ -36,6 +37,7 @@ public class CourseController {
         }
     }
 
+    // Tested
     // Update a course
     @PutMapping("/{AdminId}/{courseId}/update")
     public ResponseEntity<?> updateCourse(
@@ -51,6 +53,8 @@ public class CourseController {
             return new ResponseEntity<>("Operation failed: You are not an admin.", HttpStatus.BAD_REQUEST);
         }
     }
+
+    // Tested
     // Delete a course
     @DeleteMapping("/{AdminId}/{courseId}/delete")
     public ResponseEntity<String> deleteCourse(@PathVariable String courseId,@PathVariable Long AdminId) {
@@ -66,6 +70,7 @@ public class CourseController {
         }
     }
 
+    // Tested
     // Add media to a course
     @PostMapping("/{courseId}/media")
     public String addMediaFile(@PathVariable String courseId, @RequestParam String mediaFile) {
@@ -73,29 +78,42 @@ public class CourseController {
         return success ? "Media file added successfully." : "Failed to add media file.";
     }
 
+    // Tested
     // Add a lesson to a course
     @PostMapping("/{courseId}/lessons")
     public Lesson addLesson(@PathVariable String courseId, @RequestParam String title, @RequestParam String content) {
         return courseService.addLesson(courseId, title, content);
     }
 
+    // BUG
     // View attendance for a lesson
     @GetMapping("/{courseId}/lessons/{lessonId}/attendance")
-    public Map<String, Boolean> getLessonAttendance(@PathVariable String courseId, @PathVariable String lessonId) {
-        return courseService.getLessonAttendance(courseId, lessonId);
+    public ResponseEntity<Object> getLessonAttendance(@PathVariable String courseId, @PathVariable String lessonId) {
+        try {
+            Map<String, Boolean> attendance = courseService.getLessonAttendance(courseId, lessonId);
+            return ResponseEntity.ok(attendance);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("error", e.getMessage()));
+        }
     }
 
+    // Tested
     // View all courses
     @GetMapping
     public List<Course> getAllCourses() {
         return courseService.getAllCourses();
     }
 
+
+    // Tested
     // View enrolled students
     @GetMapping("/{courseId}/students")
     public List<Long> getEnrolledStudents(@PathVariable String courseId) {
         return courseService.getEnrolledStudents(courseId);
     }
+
+    // Tested
     @GetMapping("/{courseId}")
     public Course getCourseById(@PathVariable String courseId) {
         Course course = courseService.findCourseById(courseId);
