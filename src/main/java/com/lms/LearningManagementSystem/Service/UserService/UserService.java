@@ -59,10 +59,10 @@ public class UserService {
             throw new IllegalArgumentException("User role is required");
         }
 
-        // added to check if email already exits and fix the bug
+        // added this part to check email if it is already registered
         for (User existingUser : userStore.values()) {
             if (existingUser.getEmail().equalsIgnoreCase(user.getEmail())) {
-                throw new IllegalArgumentException("User already exists with the same email. Please register using another email.");
+                throw new IllegalArgumentException("User already exists with the same email!!! Please register using another email.");
             }
         }
 

@@ -32,7 +32,7 @@ public class UserController {
         }
     }
 
-    // BUG "fixed"
+    // BUG "fixed email duplication issue"
     // does not check if the email already exists
     @PostMapping("/register")
     public ResponseEntity<Object> registerUser(@RequestBody User user) {
