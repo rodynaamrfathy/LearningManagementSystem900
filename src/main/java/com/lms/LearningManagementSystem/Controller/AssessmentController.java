@@ -1,6 +1,8 @@
 package com.lms.LearningManagementSystem.Controller;
 import java.util.List;
 import com.lms.LearningManagementSystem.Model.Assessment.*;
+import com.lms.LearningManagementSystem.Model.User.Instructor;
+import com.lms.LearningManagementSystem.Model.User.User;
 import com.lms.LearningManagementSystem.Service.UserService.InstructorService;
 import com.lms.LearningManagementSystem.Service.UserService.StudentService;
 import org.springframework.http.HttpStatus;
@@ -13,20 +15,31 @@ import java.util.*;
 @RequestMapping("/api/Assessments")
 public class AssessmentController {
 
-    // Create Quiz
+    // Create Quiz , could not create a course with error msg "" its not a instruct w hoa mawgod
     @PostMapping("/{InstructorId}/quiz")
     public ResponseEntity<?> createQuiz(@PathVariable Long InstructorId,@RequestBody Map<String, Object> payload) {
         try {
+            User user = InstructorService.getUserById(InstructorId);
+            if (user == null) {
+                return new ResponseEntity<>("Operation failed: User not found", HttpStatus.NOT_FOUND);
+            }
+            if (!(user instanceof Instructor)) {
+                return new ResponseEntity<>("Operation failed: User is not an Instructor", HttpStatus.FORBIDDEN);
+            }
+
             String title = (String) payload.get("title");
             int totalMarks = (int) payload.get("totalMarks");
             int num = (int) payload.get("num");
             Quiz quiz = InstructorService.createQuiz(InstructorId, title, num, totalMarks);
             return new ResponseEntity<>(quiz, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>("Operation failed: You are not an Instructor.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Operation failed: " + e.getMessage(),
+                    HttpStatus.BAD_REQUEST);
         }
 
     }
+
+//ignore
     @PostMapping("/quiz/{quizId}/submit")
     public ResponseEntity<?> submitQuizAnswers(@PathVariable Long quizId, @RequestBody Map<String, Object> payload) {
         // Check if the quiz exists
@@ -50,7 +63,7 @@ public class AssessmentController {
         }
     }
 
-    // Add Question to Quiz
+    // Add Question to Quiz doneeee
     @PostMapping("/{InstructorId}/create/questions")
     public ResponseEntity<String> addQuestions( @PathVariable Long InstructorId,@RequestBody List<Question> questions) {
         try {
@@ -66,7 +79,7 @@ public class AssessmentController {
 
         }
     }
-
+//ignore
     @GetMapping("/quiz/{id}")
     public ResponseEntity<Quiz> getQuizById(@PathVariable Long id) {
         Quiz quiz = StudentService.findQuizById(id);
@@ -75,7 +88,8 @@ public class AssessmentController {
         }
         return new ResponseEntity<>(quiz, HttpStatus.OK);
     }
-    
+
+    //donee with no bugs
     @GetMapping("/{InstructorId}/questions")
     public  ResponseEntity<?> getAllQuestions(@PathVariable Long InstructorId) {
         try {
@@ -93,12 +107,13 @@ public class AssessmentController {
         }
     }
 
+    //done btrg3 empty array
     @GetMapping("/quizzes")
     public List<Quiz> GetAllquizzes() {
         return StudentService.GetAllquizzes();
     }
 
-    // Create Assignment
+    // Create Assignment doneee
     @PostMapping("/{InstructorId}/assignment")
     public ResponseEntity<?> createAssignment(@PathVariable Long InstructorId,@RequestBody Map<String, Object> payload) {
         try {
@@ -119,7 +134,7 @@ public class AssessmentController {
         }
     }
 
-    // Submit Assignment
+    // Submit Assignment done with no bugs
     @PostMapping("/assignment/{assignmentId}/submit")
     public ResponseEntity<?> submitAssignment(@PathVariable Long assignmentId, @RequestBody Map<String, Object> payload) {
         try {
@@ -152,6 +167,7 @@ public class AssessmentController {
         }
     }
 
+    //done
     @GetMapping("/assignment/{assignmentId}")
     public ResponseEntity<Assignment> getAssignmentById(@PathVariable Long assignmentId) {
         Assignment assignment = StudentService.findAssignmentById(assignmentId);
@@ -161,14 +177,14 @@ public class AssessmentController {
         return new ResponseEntity<>(assignment, HttpStatus.OK);
     }
 
-
+    // done btrg3 sah
     @GetMapping("/assignments")
     public List<Assignment> GetAllAssignments() {
         return StudentService.GetAllAssignments();
     }
 
 
-    // Grade Assessment
+    // Grade Assessment done with no bugs 
     @PostMapping("/{InstructorId}/grade")
     public ResponseEntity<String> gradeAssignment(@PathVariable Long InstructorId,@RequestBody Map<String, Object> payload) {
         try {

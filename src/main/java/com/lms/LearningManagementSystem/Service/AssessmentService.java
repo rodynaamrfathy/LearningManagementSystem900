@@ -17,7 +17,7 @@ public class AssessmentService {
     public Map<String, String> submission = new HashMap<>();
 
     // Create Quiz
-    public Quiz createQuiz(String title, int num, int totalMarks) {
+    public Quiz createQuiz(String title, int num, int totalMarks,  Long instructorId) {
         // Ensure the requested number of questions does not exceed the available questions
         if (num > Questions.size()) {
             throw new IllegalArgumentException("Requested number of questions exceeds the available question bank size.");
@@ -38,7 +38,9 @@ public class AssessmentService {
             selectedQuestions.add(copiedQuestion);
         }
         // Create the quiz with selected questions
-        Quiz quiz = new Quiz(idCounter++, title, totalMarks, selectedQuestions);
+
+        Quiz quiz = new Quiz(idCounter++, title, totalMarks, selectedQuestions,instructorId
+        );
 
         // Add the quiz to the list of quizzes
         quizzes.add(quiz);
