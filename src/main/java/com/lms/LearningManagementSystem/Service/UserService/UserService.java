@@ -55,22 +55,22 @@ public class UserService {
 
     // Add a new user
     public User addUser(User user) {
-        // Validate and set role
         if (user.getRole() == null || user.getRole().isEmpty()) {
             throw new IllegalArgumentException("User role is required");
         }
 
+        // added to check if email already exits and fix the bug
+        for (User existingUser : userStore.values()) {
+            if (existingUser.getEmail().equalsIgnoreCase(user.getEmail())) {
+                throw new IllegalArgumentException("User already exists with the same email. Please register using another email.");
+            }
+        }
+
         User newUser;
         switch (user.getRole().toLowerCase()) {
-            case "admin":
-                newUser = new Admin();
-                break;
-            case "instructor":
-                newUser = new Instructor();
-                break;
-            case "student":
-                newUser = new Student();
-                break;
+            case "admin": newUser = new Admin(); break;
+            case "instructor": newUser = new Instructor(); break;
+            case "student": newUser = new Student(); break;
             default:
                 throw new IllegalArgumentException("Invalid role. Valid roles are Admin, Instructor, and Student.");
         }
