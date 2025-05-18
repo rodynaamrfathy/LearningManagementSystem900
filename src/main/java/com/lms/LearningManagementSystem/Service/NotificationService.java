@@ -35,15 +35,26 @@ public class NotificationService {
         return Collections.emptyList();
     }
 
-    public void markNotificationAsRead(Long userId, String notificationId) {
+    public boolean markNotificationAsRead(Long userId, String notificationId) {
         User user = users.getUserById(userId);
         if (user != null) {
-            user.getNotifications().stream()
+            Optional<Notification> notificationOpt = user.getNotifications().stream()
                     .filter(notification -> notification.getId().equals(notificationId))
-                    .findFirst()
-                    .ifPresent(Notification::markAsRead);
+                    .findFirst();
+
+            if (notificationOpt.isPresent()) {
+                Notification notification = notificationOpt.get();
+                if (!notification.isRead()) {
+                    notification.markAsRead();
+                    return true;
+                }
+                // Already read notification, you may decide if this is success or failure
+                return false;
+            }
         }
+        return false;  // user not found or notification not found
     }
+
 
     public void notifyUser(Long userId, String message) {
         User user = users.getUserById(userId);
