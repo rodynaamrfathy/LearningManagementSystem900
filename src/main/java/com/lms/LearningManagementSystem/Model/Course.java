@@ -18,8 +18,9 @@ public class Course {
     private List<Lesson> lessons = new ArrayList<>();
     private List<Long> enrolledStudents;
     private Instructor instructor; // Link to the instructor
+    private String category;
 
-    public Course(Long adminId, String id, String title, String description, int duration) {
+    public Course(Long adminId, String id, String title, String description, int duration, String category) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -27,6 +28,7 @@ public class Course {
         this.mediaFiles = new ArrayList<>();
         this.lessons = new ArrayList<>();
         this.enrolledStudents = new ArrayList<>();
+        this.category =  category;
     }
 
 }
