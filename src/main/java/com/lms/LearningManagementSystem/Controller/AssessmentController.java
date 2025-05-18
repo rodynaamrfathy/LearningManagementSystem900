@@ -42,13 +42,14 @@ public class AssessmentController {
 //ignore
     @PostMapping("/quiz/{quizId}/submit")
     public ResponseEntity<?> submitQuizAnswers(@PathVariable Long quizId, @RequestBody Map<String, Object> payload) {
+        final String STUDENT_ID = "studentId";
         // Check if the quiz exists
         try {
             Quiz quiz = StudentService.findQuizById(quizId);
             if (quiz == null) {
                 return new ResponseEntity<>("Quiz not found", HttpStatus.NOT_FOUND); // Return 404 if quiz not found
             }
-            Long studentId = ((Number) payload.get("studentId")).longValue();
+            Long studentId = ((Number) payload.get(STUDENT_ID)).longValue();
             Map<String, String> submission = (Map<String, String>) payload.get("answers");
 
             // Process submission

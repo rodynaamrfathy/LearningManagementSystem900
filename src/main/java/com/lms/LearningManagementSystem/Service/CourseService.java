@@ -37,7 +37,7 @@ public class CourseService {
             throw new IllegalArgumentException("Only admins can create courses.");
         }
         String courseId = generateId();
-        Course course = new Course(AdminId,courseId, title, description, duration, category);
+        Course course = new Course(courseId, title, description, duration, category);
         courses.add(course);
         return course;
     }

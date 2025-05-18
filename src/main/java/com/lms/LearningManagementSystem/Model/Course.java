@@ -20,7 +20,7 @@ public class Course {
     private Instructor instructor; // Link to the instructor
     private String category;
 
-    public Course(Long adminId, String id, String title, String description, int duration, String category) {
+    public Course(String id, String title, String description, int duration, String category) {
         this.id = id;
         this.title = title;
         this.description = description;

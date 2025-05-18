@@ -18,12 +18,12 @@ public class AdminService extends UserService {
     }
 
     public static Course updateCourse(Long AdminId,String courseId, String title, String description, int duration) {
-        Course course = courseService.findCourseById(courseId);
+        //Course course = courseService.findCourseById(courseId);
         return courseService.updateCourse( AdminId,courseId, title, description, duration);
     }
 
     public static boolean deleteCourse(Long AdminId,String courseId) {
-        Course course = courseService.findCourseById(courseId);
+        //Course course = courseService.findCourseById(courseId);
         return courseService.deleteCourse(AdminId,courseId);
     }
 
