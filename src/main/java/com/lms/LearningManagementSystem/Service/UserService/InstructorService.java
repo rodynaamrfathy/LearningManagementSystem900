@@ -63,7 +63,7 @@ public class InstructorService extends UserService {
         if (user == null || !(user instanceof Instructor)) {
             throw new IllegalArgumentException("User is not an instructor .");
         }
-        return assessmentService.createQuiz(title, num, totalMarks);
+        return assessmentService.createQuiz(title, num, totalMarks,instructorId);
     }
 
     public static int correctAnswersCount(Long quizId, Long studentId) {

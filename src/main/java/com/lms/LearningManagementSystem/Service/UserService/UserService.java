@@ -40,7 +40,7 @@ public class UserService {
     }
 
     // Retrieve a user by ID
-    public User getUserById(Long id) {
+    public static User getUserById(Long id) {
         return userStore.get(id);
     }
 
