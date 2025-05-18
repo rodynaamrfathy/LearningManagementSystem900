@@ -27,10 +27,12 @@ public class CourseController {
             @PathVariable Long AdminId,
             @RequestParam String title,
             @RequestParam String description,
-            @RequestParam int duration)
+            @RequestParam int duration,
+            @RequestParam String category
+            )
     {
         try {
-            Course course = AdminService.createCourse(AdminId,title, description, duration);
+            Course course = AdminService.createCourse(AdminId,title, description, duration, category);
             return new ResponseEntity<>(course, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>("Operation failed: You are not an admin.", HttpStatus.BAD_REQUEST);
@@ -123,5 +125,36 @@ public class CourseController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found");
         }
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> searchCourses(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String instructorName) {
+
+        boolean allEmpty = (keyword == null || keyword.isBlank()) &&
+                (category == null || category.isBlank()) &&
+                (instructorName == null || instructorName.isBlank());
+
+        if (allEmpty) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("❌ No search parameters provided. Please enter a keyword, category, or instructor name.");
+        }
+
+        List<Course> results = courseService.searchAndFilter(keyword, category, instructorName);
+
+        if (results.isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("🔍 No courses found matching the given criteria.");
+        }
+
+        return ResponseEntity.ok(results);
+    }
+
+
+
+
 
 }
