@@ -13,8 +13,8 @@ public class AdminService extends UserService {
         super(courseService, notificationService, assessmentService);
     }
 
-    public static Course createCourse(Long AdminId,String title, String description, int duration) {
-        return courseService.createCourse(AdminId,title, description, duration);
+    public static Course createCourse(Long AdminId,String title, String description, int duration, String category) {
+        return courseService.createCourse(AdminId,title, description, duration, category);
     }
 
     public static Course updateCourse(Long AdminId,String courseId, String title, String description, int duration) {

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
@@ -31,15 +32,15 @@ public class UserController {
         }
     }
 
-    // BUG
+    // BUG "fixed email duplication issue"
     // does not check if the email already exists
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody User user) {
+    public ResponseEntity<Object> registerUser(@RequestBody User user) {
         try {
             User createdUser = userService.addUser(user);
             return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(Map.of("error", e.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -124,7 +125,7 @@ public class UserController {
         }
     }
 
-    // BUG
+    // BUG "fixed"
     // Student enters OTP to mark attendance
     @PostMapping("/mark-attendance/{studentId}/{courseId}/{lessonId}")
     public ResponseEntity<String> markAttendance(@PathVariable Long studentId, @PathVariable String courseId, @PathVariable String lessonId,

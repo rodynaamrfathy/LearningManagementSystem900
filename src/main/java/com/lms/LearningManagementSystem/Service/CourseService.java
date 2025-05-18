@@ -30,14 +30,14 @@ public class CourseService {
         return String.valueOf(idGenerator.getAndIncrement());
     }
 
-    public Course createCourse(Long AdminId,String title, String description, int duration) {
+    public Course createCourse(Long AdminId,String title, String description, int duration, String category) {
         // Check if the user exists and is an admin
         User user = userStore.get(AdminId);
         if (user == null || !(user instanceof Admin)) {
             throw new IllegalArgumentException("Only admins can create courses.");
         }
         String courseId = generateId();
-        Course course = new Course(AdminId,courseId, title, description, duration);
+        Course course = new Course(AdminId,courseId, title, description, duration, category);
         courses.add(course);
         return course;
     }
@@ -164,5 +164,38 @@ public class CourseService {
         }
         return false;
     }
+    public List<Course> searchAndFilter(String keyword, String category, String instructorName) {
+        List<Course> filteredCourses = new ArrayList<>();
+
+        for (Course course : courses) {
+            boolean matches = true;
+
+            if (keyword != null && !keyword.isBlank()) {
+                matches = matches && (
+                        course.getTitle().toLowerCase().contains(keyword.toLowerCase()) ||
+                                course.getDescription().toLowerCase().contains(keyword.toLowerCase())
+                );
+            }
+
+            if (category != null && !category.isBlank()) {
+                matches = matches && course.getCategory().equalsIgnoreCase(category);
+            }
+
+            if (instructorName != null && !instructorName.isBlank()) {
+                matches = matches &&
+                        course.getInstructor() != null &&
+                        course.getInstructor().getName() != null &&
+                        course.getInstructor().getName().toLowerCase().contains(instructorName.toLowerCase());
+            }
+
+            if (matches) {
+                filteredCourses.add(course);
+            }
+        }
+
+        return filteredCourses;
+    }
+
+
 
 }
